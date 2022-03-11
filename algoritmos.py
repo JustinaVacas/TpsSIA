@@ -139,33 +139,61 @@ def bpp(inicio, objetivo):
 
 def bppv(inicio, objetivo, profundidad):
     explorados = set()
+    faltantes = set()
+    expandir = set()
     frontera = deque()  # nodos sin expandir
     frontera.append(Nodo(inicio, None, None, 0))
     prof = 0
+    nodo_inicial = Nodo(inicio, None, None, 0)
     while frontera and prof <= profundidad:
+        print("profundidad actual: ", prof)
         nodo = frontera.pop()
+
+        print("nodo")
+        nodo.imprimir()
+        print("nodo")
+
+        print("agregando a faltantes")
+        while len(frontera) != 0:
+            aux = frontera.pop()
+            if aux.estado != nodo_inicial.estado:
+                faltantes.add(aux)
+                aux.imprimir()
+        print("agregando a faltantes")
+
         if nodo not in explorados:
             explorados.add(nodo)
-            if nodo.padre is not None:
-                prof = prof + 1
+            prof = prof + 1
         else:
             continue
+        for nodos in faltantes:
+            if nodos not in explorados:
+                explorados.add(nodos)
+                expandir.add(nodos)
         if nodo.estado == objetivo:
             print("\n Llego al objetivo!")
             print("Cantidad de nodos expandidos: ", len(explorados))
             print("Profundidad: ", nodo.profundidad)
             return nodo.encontrar_camino(inicio)
         else:
+            print("nodos a expandir")
+            print("------")
+            nodo.imprimir()
             frontera.extend(nodo.encontrar_sucesores())
+            for nodos in expandir:
+                frontera.extend(nodos.encontrar_sucesores())
+                nodos.imprimir()
+            print("------")
+            expandir.clear()
+
         for elem in explorados:
             elem.imprimir()
-        if prof == profundidad:
-            time.sleep(0.1)
-            profundidad = profundidad + 1
-            print("Aumento del limite de profundidad\n")
-            print("Profundidad: ", profundidad)
-            print("\n")
-        print("profundidad current: ", prof)
+        # if prof == profundidad:
+        #     time.sleep(0.1)
+        #     profundidad = profundidad + 1
+        #     print("Aumento del limite de profundidad\n")
+        #     print("Profundidad: ", profundidad)
+        #     print("\n")
 
 
 def main():
@@ -175,6 +203,8 @@ def main():
     Nodo(estado_inicial, None, None, 0).imprimir()
     print("----------------")
     bpa(estado_inicial, estado_objetivo)
+    # bpp(estado_inicial, estado_objetivo)
+    # bppv(estado_inicial, estado_objetivo, 2)
     print("----------------")
     print("Estado final:")
     Nodo(estado_objetivo, None, None, 0).imprimir()

@@ -1,4 +1,5 @@
 from collections import deque
+import time
 
 
 # clase que define el nodo
@@ -9,54 +10,115 @@ class Nodo:
         self.movimiento = movimiento  # moviento para llegar a este nodo desde el padre
         self.profundidad = profundidad  # profundidad en el arbol
 
-        def mover():
-            estado = list
+    def mover(self, direccion):
+        estado = list(self.estado)
+        ind = estado.index(0)
 
-        def encontrar_sucesores():
-            sucesores = []
-            sucesorN = self.mover("arriba")
-            sucesorS = self.mover("abajo")
-            sucesorE = self.mover("derecha")
-            sucesorO = self.mover("izquierda")
+        if direccion == "arriba":
+            if ind not in [6, 7, 8]:
+                temp = estado[ind + 3]
+                estado[ind + 3] = estado[ind]
+                estado[ind] = temp
+                return tuple(estado)
+            else:
+                return None
+        elif direccion == "abajo":
+            if ind not in [0, 1, 2]:
+                temp = estado[ind - 3]
+                estado[ind - 3] = estado[ind]
+                estado[ind] = temp
+                return tuple(estado)
+            else:
+                return None
+        elif direccion == "izquierda":
+            if ind not in [2, 5, 8]:
+                temp = estado[ind + 1]
+                estado[ind + 1] = estado[ind]
+                estado[ind] = temp
+                return tuple(estado)
+            else:
+                return None
+        elif direccion == "derecha":
+            if ind not in [0, 3, 6]:
+                temp = estado[ind - 1]
+                estado[ind - 1] = estado[ind]
+                estado[ind] = temp
+                return tuple(estado)
+            else:
+                return None
 
-            sucesores.append(Nodo(sucesorN, self, "arriba", self.profundidad + 1))
-            sucesores.append(Nodo(sucesorS, self, "abajo", self.profundidad + 1))
-            sucesores.append(Nodo(sucesorE, self, "derecha", self.profundidad + 1))
-            sucesores.append(Nodo(sucesorO, self, "izquierda", self.profundidad + 1))
+    def encontrar_sucesores(self):
+        sucesores = []
+        sucesorN = self.mover("arriba")
+        sucesorS = self.mover("abajo")
+        sucesorE = self.mover("derecha")
+        sucesorO = self.mover("izquierda")
 
-            sucesores = [nodo for nodo in sucesores if nodo.estado is not None]
-            return sucesores
+        # Encuentra los sucesores
+        sucesores.append(Nodo(sucesorN, self, "arriba", self.profundidad + 1))
+        sucesores.append(Nodo(sucesorS, self, "abajo", self.profundidad + 1))
+        sucesores.append(Nodo(sucesorE, self, "derecha", self.profundidad + 1))
+        sucesores.append(Nodo(sucesorO, self, "izquierda", self.profundidad + 1))
 
-        def encontrar_camino(self, inicio):
-            camino = []
-            nodo_actual = self
-            while nodo_actual.profundida >= 1:
-                camino.append(nodo_actual)
-                nodo_actual = nodo_actual.padre
-            camino.reverse()
-            return camino
+        sucesores = [nodo for nodo in sucesores if nodo.estado is not None]
+        return sucesores
+
+    def encontrar_camino(self, inicio):
+        camino = []
+        nodo_actual = self
+        # print("La profundidad de la solucion es: " + nodo_actual.profundidad)  # profundidad
+        while nodo_actual.profundidad >= 1:
+            camino.append(nodo_actual)
+            nodo_actual = nodo_actual.padre
+        camino.reverse()
+        print("Camino de resolucion")
+        for elem in camino:
+            elem.imprimir()
+            print("\n")
+        return camino
+
+    def imprimir(self):
+        fila = 0
+        for pieza in self.estado:
+            if pieza == 0:
+                print(" ", end=" ")
+            else:
+                print(pieza, end=" ")
+            fila += 1
+            if fila == 3:
+                print()
+                fila = 0
+        print("\n")
 
 
+# bfs
 def bpa(inicio, objetivo):
+    print("bpa")
     explorados = set()  # conjunto de nodos explorados
     frontera = deque()  # nodos sin expandir
     frontera.append(Nodo(inicio, None, None, 0))
     while frontera:
         nodo = frontera.popleft()
         if nodo.estado not in explorados:
-            explorados.add(nodo.estado)
-            print("\n", explorados)
+            explorados.add(nodo.estado)  # cantidad de nodos explorados len(explorados)
+            nodo.imprimir()
+            print("\n")
+            # print("\n", explorados)
         else:
             continue
         if nodo.estado == objetivo:
-            print("\n Llego al objetivo")
+            print("\n Llego al objetivo!")  # resultado de la busqueda exito
+            print("Cantidad de nodos expandidos: ", len(explorados))
+            print("Profundidad: ", nodo.profundidad)
             return nodo.encontrar_camino(inicio)
         else:
             frontera.extend(nodo.encontrar_sucesores())
+    print("\n No llego al objetivo")  # resultado de la busqueda fracaso
 
 
+# dfs hacer clase
 def bpp(inicio, objetivo):
-    explorados = set()  # conjunto de nodos explorados
+    explorados = set()
     frontera = deque()  # nodos sin expandir
     frontera.append(Nodo(inicio, None, None, 0))
     while frontera:
@@ -67,33 +129,56 @@ def bpp(inicio, objetivo):
         else:
             continue
         if nodo.estado == objetivo:
-            print("\n Llego al objetivo")
+            print("\n Llego al objetivo!")
+            print("Cantidad de nodos expandidos: ", len(explorados))
+            print("Profundidad: ", nodo.profundidad)
             return nodo.encontrar_camino(inicio)
         else:
             frontera.extend(nodo.encontrar_sucesores())
 
 
-def bppv(inicio, objetivo, limite):
+def bppv(inicio, objetivo, profundidad):
     explorados = set()
-    frontera = deque()
+    frontera = deque()  # nodos sin expandir
     frontera.append(Nodo(inicio, None, None, 0))
-    while frontera:
+    prof = 0
+    while frontera and prof <= profundidad:
         nodo = frontera.pop()
-        if nodo.estado not in explorados:
-            explorados.add(nodo.estado)
-            print("\n", explorados)
+        if nodo not in explorados:
+            explorados.add(nodo)
+            if nodo.padre is not None:
+                prof = prof + 1
         else:
             continue
         if nodo.estado == objetivo:
-            print("\n Llego al objetivo")
+            print("\n Llego al objetivo!")
+            print("Cantidad de nodos expandidos: ", len(explorados))
+            print("Profundidad: ", nodo.profundidad)
             return nodo.encontrar_camino(inicio)
         else:
             frontera.extend(nodo.encontrar_sucesores())
+        for elem in explorados:
+            elem.imprimir()
+        if prof == profundidad:
+            time.sleep(0.1)
+            profundidad = profundidad + 1
+            print("Aumento del limite de profundidad\n")
+            print("Profundidad: ", profundidad)
+            print("\n")
+        print("profundidad current: ", prof)
 
 
-def printPuzzle(fin):
-    print("___")
-    print(' '.join(fin.estado[0:3]))
-    print(' '.join(fin.estado[3:6]))
-    print(' '.join(fin.estado[6:9]))
-    print('')
+def main():
+    estado_objetivo = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+    estado_inicial = (0, 1, 3, 4, 2, 5, 7, 8, 6)
+    print("Estado inicial:")
+    Nodo(estado_inicial, None, None, 0).imprimir()
+    print("----------------")
+    bpa(estado_inicial, estado_objetivo)
+    print("----------------")
+    print("Estado final:")
+    Nodo(estado_objetivo, None, None, 0).imprimir()
+
+
+if __name__ == '__main__':
+    main()

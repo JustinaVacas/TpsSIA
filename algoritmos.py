@@ -9,6 +9,7 @@ class Nodo:
         self.padre = padre  # nodo padre
         self.movimiento = movimiento  # moviento para llegar a este nodo desde el padre
         self.profundidad = profundidad  # profundidad en el arbol
+       # self.heuristica = heuristica
 
     def mover(self, direccion):
         estado = list(self.estado)
@@ -55,6 +56,11 @@ class Nodo:
         sucesorO = self.mover("izquierda")
 
         # Encuentra los sucesores
+       # sucesores.append(Nodo(sucesorN, self, "arriba", self.profundidad + 1, heuristica(sucesorN)))
+       # sucesores.append(Nodo(sucesorS, self, "abajo", self.profundidad + 1, heuristica(sucesorS)))
+       # sucesores.append(Nodo(sucesorE, self, "derecha", self.profundidad + 1, heuristica(sucesorE)))
+       # sucesores.append(Nodo(sucesorO, self, "izquierda", self.profundidad + 1, heuristica(sucesorO)))
+
         sucesores.append(Nodo(sucesorN, self, "arriba", self.profundidad + 1))
         sucesores.append(Nodo(sucesorS, self, "abajo", self.profundidad + 1))
         sucesores.append(Nodo(sucesorE, self, "derecha", self.profundidad + 1))
@@ -188,17 +194,38 @@ def bppv(inicio, objetivo, profundidad):
 
         for elem in explorados:
             elem.imprimir()
-        # if prof == profundidad:
-        #     time.sleep(0.1)
-        #     profundidad = profundidad + 1
-        #     print("Aumento del limite de profundidad\n")
-        #     print("Profundidad: ", profundidad)
-        #     print("\n")
+
+
+'''
+def bhg(estado_inicial, estado_objetivo):
+    inicial = Nodo(estado_inicial, None, None, 0)
+    arbol = set(inicial)
+    frontera = set(inicial)
+    explorados = set()
+    while len(frontera) != 0:
+        nodo_actual = frontera.pop()
+        if nodo_actual == estado_objetivo:
+            print("\n Llego al objetivo!")
+            print("Cantidad de nodos expandidos: ", len(explorados))
+            print("Profundidad: ", nodo_actual.profundidad)
+            return nodo_actual.encontrar_camino(estado_inicial)
+        else:
+            frontera.extend(nodo_actual.encontrar_sucesores())
+            for nodos in arbol:
+                frontera.extend(nodos.encontrar_sucesores())
+                arbol.extend(nodos.encontrar_sucesores())
+                nodos.imprimir()
+            frontera.sort(key=sort_by_h())
+
+def sort_by_h():
+    return nodo.heuristica
+
+'''
 
 
 def main():
     estado_objetivo = (1, 2, 3, 4, 5, 6, 7, 8, 0)
-    estado_inicial = (0, 1, 3, 4, 2, 5, 7, 8, 6)
+    estado_inicial = (7, 2, 4, 5, 0, 6, 8, 3, 1)     # (0, 1, 3, 4, 2, 5, 7, 8, 6)
     print("Estado inicial:")
     Nodo(estado_inicial, None, None, 0).imprimir()
     print("----------------")

@@ -66,7 +66,7 @@ with open(sys.argv[1], 'r') as configuracion:
     configuracion.close()
 '''
 from TP1.algoritmos.bpa import bpa
-from TP1.utils.nodos import Nodo
+from TP1.utiles.nodos import Nodo
 
 
 def main():

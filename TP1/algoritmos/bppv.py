@@ -1,5 +1,5 @@
 from collections import deque
-from TP1.utils.nodos import Nodo
+from TP1.utiles.nodos import Nodo
 
 
 def bppv(inicio, objetivo, profundidad):

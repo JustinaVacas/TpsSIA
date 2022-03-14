@@ -1,4 +1,4 @@
-from TP1.utils.nodos import NodoH
+from TP1.utiles.nodos import NodoH
 
 
 def bhg(estado_inicial, estado_objetivo):

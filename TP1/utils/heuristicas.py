@@ -1,7 +1,9 @@
 OBJETIVO = (1, 2, 3, 4, 5, 6, 7, 8, 0)
 
 
+# cantidad de estados que estan mal
 def hamming_distance(actual):
+    print(actual)
     heu = 0
     i = 0
     while i < 9:
@@ -11,6 +13,7 @@ def hamming_distance(actual):
     return heu
 
 
+# numero de pasos para llega al resultado
 def manhattan_distance(actual):
     heu = 0
     i = 0

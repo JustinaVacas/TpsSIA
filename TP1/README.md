@@ -20,7 +20,7 @@ Para ejecutar el programa utulizar el siguiente comando:
 
 El archivo de configuracion (.json) esta compuesto por los siguientes parametros:
 
-- algoritmo: "BPA", "BPP", "BPPV", "BHL", "BHG", "AESTRELLA"
-- estado_inicial: "(0,1,3,2,4,5,6,7,8)"
-- limite: valor numerico
-- heuristica: "Manhattan","Hamming","Hamming-edit"
+- algoritmo: "BPA", "BPP", "BPPV", "BHL", "BHG", "A*"
+- estado_inicial: "(0,1,3,2,4,5,6,7,8)" (se lee el cuadrado de izquierda a derecha)
+- limite: valor numerico (en caso de no querer limite poner -1)
+- heuristica: "M" (para Manhattan),"H" (para Hamming),"NA" (para el no admisible)

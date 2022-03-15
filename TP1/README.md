@@ -10,6 +10,10 @@
 
 Se busca implementar un generador de soluciones para un rompecabezas de 8 numeros.
 
+## Requisitos
+
+Para poder ejecutuar con exito el programa se necesita installar el siguiente plugin: Colorama 
+
 ## Ejecutar
 
 Para ejecutar el programa utulizar el siguiente comando: 

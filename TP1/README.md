@@ -13,7 +13,7 @@ Se busca implementar un generador de soluciones para un rompecabezas de 8 numero
 ## Ejecutar
 
 Para ejecutar el programa utulizar el siguiente comando
-  python3 rompecabeza.py [config file]
+    python3 rompecabeza.py [config file]
 
 ## Configuracion
 

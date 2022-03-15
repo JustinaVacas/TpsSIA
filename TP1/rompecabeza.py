@@ -1,7 +1,11 @@
-'''
 import json
 import sys
 
+from TP1.algoritmos.aestrella import aestrella
+from TP1.algoritmos.bhg import bhg
+from TP1.algoritmos.bhl import bhl
+from TP1.algoritmos.bpp import bpp
+from TP1.algoritmos.bppv import bppv
 from algoritmos.bpa import bpa
 
 ESTADO_OBJETIVO = (1, 2, 3, 4, 5, 6, 7, 8, 0)
@@ -21,7 +25,8 @@ with open(sys.argv[1], 'r') as configuracion:
     estado_inicial = []
     if 'estado_inicial' in config:
         for c in range(0, len(config['estado_inicial'])):
-            if config['estado_inicial'][c] == " " or config['estado_inicial'][c] == ',' or config['estado_inicial'][c] == '(' or config['estado_inicial'][c] == ')':
+            if config['estado_inicial'][c] == " " or config['estado_inicial'][c] == ',' or config['estado_inicial'][c] \
+                    == '(' or config['estado_inicial'][c] == ')':
                 continue
             else:
                 estado_inicial.append(int(config['estado_inicial'][c]))
@@ -31,58 +36,47 @@ with open(sys.argv[1], 'r') as configuracion:
         if config['limite'] > 0:
             limite = config['limite']
         else:
-            limite = -1
+            limite = 'No aplicado.'
 
     if 'heuristica' in config:
-        if config['heuristica'] == 'Manhattan' or config['heuristica'] == 'Hamming':
+        if config['heuristica'] == 'M' or config['heuristica'] == 'H' or config['heuristica'] == 'NA':
             heuristica = config['heuristica']
         else:
-            heuristica = -1
+            heuristica = 'No aplicada.'
 
     algoritmo = config['algoritmo']
-    heuristicas = {"Manhattan", "Hamming"}
 
-    print(algoritmo)
-    print(inicial)
-    print(heuristica)
-    print(limite)
+    print('Algoritmo seleccionado: ', algoritmo)
+    print('Estado inicial: ', inicial)
+    if heuristica == 'M':
+        print('Heuristica: Manhattan')
+    elif heuristica == 'H':
+        print('Heuristica: Hamming')
+    elif heuristica == 'NA':
+        print('Heuristica: No admisible')
+    else:
+        print('Heuristica: No aplicada')
+    print('Limite: ', limite)
+    print('\n')
 
     if algoritmo == 'BPA':
         s = bpa(inicial, ESTADO_OBJETIVO)
-    # elif algoritmo == 'BPP':
-    #     s = bpp(inicial, ESTADO_OBJETIVO)
-    # elif algoritmo == 'BPPV':
-    #     s = bppv(estado_inicial, limit)
-    # elif algoritmo == 'BHG':
-    #     s = bhg(estado_inicial, heu))
-    # elif algoritmo == 'BHL':
-    #     s = bhl(estado_inical)
-    # elif algoritmo == 'A*':
-    #     s = a*(estado_inical)
+    elif algoritmo == 'BPP':
+        s = bpp(inicial, ESTADO_OBJETIVO)
+    elif algoritmo == 'BPPV':
+        if limite == 'No aplicado.':
+            s = bppv(inicial, ESTADO_OBJETIVO, -1)
+        else:
+            s = bppv(inicial, ESTADO_OBJETIVO, limite)
+    elif algoritmo == 'BHG':
+        s = bhg(inicial, ESTADO_OBJETIVO, heuristica)
+    elif algoritmo == 'BHL':
+        s = bhl(inicial, ESTADO_OBJETIVO, heuristica)
+    elif algoritmo == 'A*':
+        s = aestrella(inicial, ESTADO_OBJETIVO, heuristica)
     else:
         print('Algoritmo incorrecto')
         configuracion.close()
         exit()
+
     configuracion.close()
-'''
-from TP1.algoritmos.bpa import bpa
-from TP1.utiles.nodos import Nodo
-
-
-def main():
-    estado_objetivo = (1, 2, 3, 4, 5, 6, 7, 8, 0)
-    estado_inicial = (0, 1, 3, 4, 2, 5, 7, 8, 6)  # (0, 1, 3, 4, 2, 5, 7, 8, 6)
-    print("Estado inicial:")
-    Nodo(estado_inicial, None, None, 0).imprimir()
-    print("----------------")
-    bpa(estado_inicial, estado_objetivo)
-    # bpp(estado_inicial, estado_objetivo)
-    # bppv(estado_inicial, estado_objetivo, 2)
-    # bhg(estado_inicial, estado_objetivo)
-    print("----------------")
-    print("Estado final:")
-    Nodo(estado_objetivo, None, None, 0).imprimir()
-
-
-if __name__ == '__main__':
-    main()

@@ -1,24 +1,37 @@
-from collections import deque
 from TP1.utiles.nodos import Nodo
+from collections import deque
+import time
 
 
 def bpp(inicio, objetivo):
+
     explorados = set()
-    frontera = deque()  # nodos sin expandir
-    frontera.append(Nodo(inicio, None, None, 0))
+    frontera = deque()
+    frontera.append(Nodo(inicio, None, None, 0))  # nodos sin expandir
+    start_time = time.process_time()
+
     while frontera:
-        nodo = frontera.pop()
+        nodo = frontera.popleft()
         if nodo.estado not in explorados:
             explorados.add(nodo.estado)
-            print("\n", explorados)
         else:
             continue
         if nodo.estado == objetivo:
-            print("\n Llego al objetivo!")
+            end_time = time.process_time()
+            print("Llegó al objetivo!")
             print("Cantidad de nodos expandidos: ", len(explorados))
+            print("Cantidad de nodos frontera: ", len(frontera))
             print("Profundidad: ", nodo.profundidad)
+            print('Costo: ', nodo.profundidad)
+            print('Tiempo de búsqueda: ', end_time-start_time)
             return nodo.encontrar_camino(inicio)
-        else:
-            frontera.extend(nodo.encontrar_sucesores())
 
-    print("\n No llego al objetivo")  # resultado de la busqueda fracaso
+        for n in nodo.encontrar_sucesores():
+            if n not in explorados:
+                frontera.append(n)
+
+    end_time = time.process_time()
+    print("No llegó al objetivo")  # resultado de la busqueda fracaso
+    print("Cantidad de nodos expandidos: ", len(explorados))
+    print("Cantidad de nodos frontera: ", len(frontera))
+    print('Tiempo de búsqueda: ', end_time - start_time)

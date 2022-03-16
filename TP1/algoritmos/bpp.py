@@ -11,7 +11,7 @@ def bpp(inicio, objetivo):
     start_time = time.process_time()
 
     while frontera:
-        nodo = frontera.popleft()
+        nodo = frontera.pop()
         if nodo.estado not in explorados:
             explorados.add(nodo.estado)
         else:

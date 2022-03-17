@@ -28,7 +28,7 @@ def bpa(inicio, objetivo):
             return nodo.encontrar_camino(inicio)
         else:
             for n in nodo.encontrar_sucesores():
-                if n not in explorados:
+                if n.estado not in explorados:
                     frontera.append(n)
 
     end_time = time.process_time()

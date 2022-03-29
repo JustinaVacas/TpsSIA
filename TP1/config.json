@@ -1,6 +1,6 @@
 {
-  "algoritmo": "BPA",
+  "algoritmo": "A*",
   "estado_inicial": "(0, 1, 3, 4, 2, 5, 7, 8, 6)",
   "limite": -1,
-  "heuristica": "NA"
+  "heuristica": "M"
 }

@@ -1,7 +1,7 @@
 import numpy
 
 
-class individual:
+class Individual:
     def __init__(self, genotype, fitness):
         self.genotype = genotype
         self.fitness = fitness
@@ -19,7 +19,7 @@ def generate_initial_population():
     while i < P:
         genotype = numpy.random.uniform(-1000, 1000, 11)
         fitness = 0
-        X = individual(genotype, fitness)
+        X = Individual(genotype, fitness)
         population.append(X)
         i += 1
 

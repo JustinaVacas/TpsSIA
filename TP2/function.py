@@ -35,6 +35,12 @@ def g(x):
     return (math.exp(x))/(1+math.exp(x))
 
 
+# sol = [0,1,2]
+def error(individual, sol, rulos):
+    aux = 0
+    for i in range(3):
+        aux += math.pow(sol[i] - function(individual, rulos[i]), 2)
+    return aux
 
 individual = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2]
 rulo = [4.4793, -4.0765, -4.0765]

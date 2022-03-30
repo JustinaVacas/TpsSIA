@@ -1,4 +1,4 @@
-from random import random
+import random
 from function import error
 from population_0 import generate_initial_population
 
@@ -11,10 +11,8 @@ def apply_fitness(old_population):
 def select(population):
     return population[1], population[2]
 
-def cross(x1, x2):
-    return x2, x1
 
-
+'''
 def create_next_population(population):
     i = 0
     while i < P:

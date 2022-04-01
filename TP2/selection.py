@@ -18,7 +18,7 @@ def elite_selection(population, P):
     return new_population
 
 
-def roulette_wheel_selection(population):
+def roulette_wheel_selection(population, P):
     total_fitness = 0
     probabilities = []
     selected = []
@@ -26,7 +26,8 @@ def roulette_wheel_selection(population):
         total_fitness += population[i].fitness
     for j in range(len(population)):
         probabilities.append(population[j].fitness / total_fitness)
-    while len(selected) == 0:
+    aux = 0
+    while aux != P:
         num = random.uniform(0, 1)
         x = 0
         for ind in range(len(population)):
@@ -34,42 +35,12 @@ def roulette_wheel_selection(population):
                 break
             if probabilities[x] < num <= probabilities[x + 1]:
                 selected.append(population[ind])
-                break
+                aux += 1
             x += 1
-    return Individual.print(selected[0])
+    return selected
 
 
-def rank_selection(population):
-    '''
-    fitness = list()
-    for i in range(len(population)):
-        fitness.append(population[i])
-    fitness.sort(key=lambda x: x.fitness, reverse=True)
-    '''
-
-
-def tournament_selection(population):
-    u = random.uniform(0.5, 1)
-    points = random.sample(range(1, len(population[0])), 4).sort
-    r = random.uniform(0, 1)
-    p = []
-    for i in range(0, 3, 2):
-        if r < u:  # selecciono el mas apto
-            if population[i].fitness > population[i + 1]:
-                p.append(population[i])
-            else:
-                p.append(population[i + 1])
-        else:  # selecciono el menos apto
-            if population[i].fitness > population[i + 1]:
-                p.append(population[i + 1])
-            else:
-                p.append(population[i])
-    if p[0].fitness > p[1].fitness:
-        return p[0]
-    return p[1]
-
-
-def roulette_wheel_boltzmann(population):
+def roulette_wheel(population, P):
     total_fitness = 0
     probabilities = []
     selected = []
@@ -77,7 +48,7 @@ def roulette_wheel_boltzmann(population):
         total_fitness += population[i][1]
     for j in range(len(population)):
         probabilities.append(population[j][1] / total_fitness)
-    while len(selected) == 0:
+    for p in range(P):
         num = random.uniform(0, 1)
         x = 0
         for ind in range(len(population)):
@@ -85,9 +56,74 @@ def roulette_wheel_boltzmann(population):
                 break
             if probabilities[x] < num <= probabilities[x + 1]:
                 selected.append(population[ind])
-                break
             x += 1
-    return Individual.print(selected[0][0][0])
+    return selected
+
+
+def rank_selection(population):
+    new_population = []
+    rank = list()
+    for i in range(len(population)):
+        rank.append([population[i], population[i].fitness])
+    rank = sorted(rank, key=lambda ranking: ranking[1], reverse=True)
+    f = 0
+    for j in range(1, len(rank) + 1):
+        f += (j - rank[j - 1][1]) / j
+    for pi in range(1, len(rank) + 1):
+        p = ((pi - rank[pi - 1][1]) / pi) / f
+        new_population.append([rank[pi][0], p])
+    return roulette_wheel(new_population, len(new_population) // 2)
+
+
+def tournament_select(population):
+    u = random.uniform(0.5, 1)
+    points = random.sample(range(1, len(population)), 4)
+    r = random.uniform(0, 1)
+    p = []
+    for i in range(0, 3, 2):
+        if r < u:  # selecciono el mas apto
+            if population[points[i]].fitness > population[points[i + 1]].fitness:
+                p.append(population[points[i]])
+            else:
+                p.append(population[points[i + 1]])
+        else:  # selecciono el menos apto
+            if population[i].fitness > population[i + 1]:
+                p.append(population[i + 1])
+            else:
+                p.append(population[points[i]])
+    if p[0].fitness > p[1].fitness:
+        return p[0]
+    return p[1]
+
+
+def tournament_selection(population, P):
+    new_population = []
+    for i in range(P):
+        aux = tournament_select(population)
+        new_population.append(aux)
+        population.remove(aux)
+
+    return new_population
+
+
+def roulette_wheel_boltzmann(population, P):
+    total_fitness = 0
+    probabilities = []
+    selected = []
+    for i in range(len(population)):
+        total_fitness += population[i][1]
+    for j in range(len(population)):
+        probabilities.append(population[j][1] / total_fitness)
+    for p in range(P):
+        num = random.uniform(0, 1)
+        x = 0
+        for ind in range(len(population)):
+            if x + 1 == len(probabilities):
+                break
+            if probabilities[x] < num <= probabilities[x + 1]:
+                selected.append(population[ind])
+            x += 1
+    return selected
 
 
 def boltzmann_selection(population, k, tc, to, t, output, points):
@@ -101,10 +137,10 @@ def boltzmann_selection(population, k, tc, to, t, output, points):
     for j in range(len(population)):
         ve = math.exp((error(population[j].genotype, output, points)) / T) / aux
         new_population.append([[population[j]], ve])
-    return roulette_wheel_boltzmann(new_population)
+    return roulette_wheel_boltzmann(new_population, len(population) // 2)
 
 
-def truncated_selection(population, k):
+def truncated_selection(population, P, k):
     fitness = sorted(population, key=lambda x: x.fitness)
     fitness = fitness[k:]
     return random.sample(fitness, P)

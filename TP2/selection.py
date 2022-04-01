@@ -1,6 +1,8 @@
 import math
 import random
 import numpy
+
+from TP2.function import error
 from TP2.population_0 import Individual
 
 
@@ -27,11 +29,11 @@ def roulette_wheel_selection(population):
         for ind in range(len(population)):
             if x + 1 == len(probabilities):
                 break
-            if probabilities[x] < num < probabilities[x + 1]:
+            if probabilities[x] < num <= probabilities[x + 1]:
                 selected.append(population[ind])
                 break
             x += 1
-    return selected[0]
+    return Individual.print(selected[0])
 
 
 def rank_selection(population):

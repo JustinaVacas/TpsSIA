@@ -9,13 +9,13 @@ import math
 # range(6,9)  -->  6 7 8
 
 
-def function(individual, rulo):
-    aux = aux2 = aux3 = aux5 = aux4 = 0
+def function(individual, point):
+    aux4 = 0
     for i in range(1, 3):
         aux = 0
         aux3 = 0
         for j in range(3 * i, 3 + 3 * i):
-            aux += individual[j] * rulo[j - 3 * i] - individual[8 + i]  # w10 w20
+            aux += individual[j] * point[j - 3 * i] - individual[8 + i]  # w10 w20
         aux2 = g(aux)
         aux3 += individual[i] * aux2  # SUM( W * g(...) )
         aux4 += aux3 - individual[0]
@@ -28,11 +28,10 @@ def g(x):
     return (math.exp(x)) / (1 + math.exp(x))
 
 
-# sol = [0,1,2]
-def error(individual, sol, rulos):
+def error(individual, output, points):
     aux = 0
     for i in range(3):
-        aux += math.pow(sol[i] - function(individual, rulos[i]), 2)
+        aux += math.pow(output[i] - function(individual, points[i]), 2)
     return aux
 
 

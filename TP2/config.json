@@ -1,13 +1,13 @@
 {
-  "generations": 100,
+  "generations": 500,
   "mutation_p": 0.05,
-  "mutation_a": 1,
+  "mutation_a": 0.5,
   "crossing_method": "simple",
-  "selection_method": "elite",
+  "selection_method": "roulette",
   "P": 1000,
-  "random_min": -50,
-  "random_max": 50,
+  "random_min": -10,
+  "random_max": 10,
   "points": [[4.4793, -4.0765, -4.0765], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.8830]],
   "output": [0, 1, 1],
-  "accepted_solution": 0
+  "accepted_solution": 3
 }

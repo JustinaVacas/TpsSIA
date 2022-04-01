@@ -6,13 +6,16 @@ from TP2.function import error
 from TP2.population_0 import Individual
 
 
-def elite_selection(population):
-    max_fitness = 0
-    for i in range(len(population)):
-        if i != 0:
-            if population[max_fitness].fitness < population[i].fitness:
-                max_fitness = i
-    return population[max_fitness]
+def sort_population_by_fitness(individual):
+    return individual.fitness
+
+
+def elite_selection(population, P):
+    new_population = []
+    population = sorted(population, key=sort_population_by_fitness, reverse=True)
+    for i in range(P):
+        new_population.append(population[i])
+    return new_population
 
 
 def roulette_wheel_selection(population):
@@ -104,12 +107,19 @@ def boltzmann_selection(population, k, tc, to, t, output, points):
 def truncated_selection(population, k):
     fitness = sorted(population, key=lambda x: x.fitness)
     fitness = fitness[k:]
-    return random.sample(fitness, 1)[0].fitness  # cuantos selecciona aleatoriamente
-
-
-individual1 = Individual(numpy.random.uniform(-1000, 1000, 11), 1)
-individual2 = Individual(numpy.random.uniform(-1000, 1000, 11), 2)
-individual3 = Individual(numpy.random.uniform(-1000, 1000, 11), 3)
-individual4 = Individual(numpy.random.uniform(-1000, 1000, 11), 4)
-population = [individual1, individual2, individual3, individual4]
-print("truncada: ", truncated_selection(population, 2))
+    return random.sample(fitness, P)
+#
+#
+# individual1 = Individual(numpy.random.uniform(-1000, 1000, 11), 1)
+# individual2 = Individual(numpy.random.uniform(-1000, 1000, 11), 2)
+# individual3 = Individual(numpy.random.uniform(-1000, 1000, 11), 3)
+# individual4 = Individual(numpy.random.uniform(-1000, 1000, 11), 4)
+# individual5 = Individual(numpy.random.uniform(-1000, 1000, 11), 5)
+# individual6 = Individual(numpy.random.uniform(-1000, 1000, 11), 6)
+# individual7 = Individual(numpy.random.uniform(-1000, 1000, 11), 7)
+# individual8 = Individual(numpy.random.uniform(-1000, 1000, 11), 8)
+# individual9 = Individual(numpy.random.uniform(-1000, 1000, 11), 9)
+# individual10 = Individual(numpy.random.uniform(-1000, 1000, 11), 10)
+# population = [individual1, individual2, individual3, individual4, individual5, individual6, individual7, individual8,
+#               individual9, individual10]
+# roulette_wheel_selection(population, 5)

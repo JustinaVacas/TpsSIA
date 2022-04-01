@@ -1,5 +1,6 @@
 import math
 
+
 # individual [W0 W1 W2 w11 w12 w13 w21 w22 w23 w01 w02 ]
 #             0  1  2   3   4   5   6   7   8  9   10
 # rulo[ A B C ]
@@ -28,12 +29,21 @@ def g(x):
     return (math.exp(x)) / (1 + math.exp(x))
 
 
+# def error(individual, output, points):
+#     aux = 0
+#     for i in range(3):
+#         aux += math.pow(output[i] - function(individual, points[i]), 2)
+#     aux = 100 - aux*(math.pow(10, 8))
+#     if aux < 0:
+#         return 0
+#     else:
+#         return aux
+
 def error(individual, output, points):
     aux = 0
     for i in range(3):
         aux += math.pow(output[i] - function(individual, points[i]), 2)
-    return aux
-
+    return 3 - aux
 
 # individual = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2]
 # rulo1 = [4.4793, -4.0765, -4.0765]

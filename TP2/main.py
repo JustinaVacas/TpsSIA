@@ -3,11 +3,13 @@ import sys
 import numpy as np
 
 from crossover import simple_crossover, uniform_crossover, multiple_crossover
-from population_0 import generate_initial_population
+from population_0 import generate_initial_population, Individual
 from next_population import create_next_population
 from function import error
 from selection import elite_selection, roulette_wheel_selection, rank_selection, boltzmann_selection, \
-    tournament_selection, truncated_selection
+    tournament_selection, truncated_selection, sort_population_by_fitness
+
+import matplotlib.pyplot as plt
 
 if len(sys.argv) < 2 or not str(sys.argv[1]).endswith('.json'):
     print('Invalid argument')
@@ -49,6 +51,9 @@ def algorithm():
             selection_method = truncated_selection
 
     P = config['P']
+    if P % 2 != 0:
+        P = P + 1
+
     random_min = config['random_min']
     random_max = config['random_max']
     accepted_solution = config['accepted_solution']
@@ -66,36 +71,50 @@ def algorithm():
     def fitness(individual):
         return error(individual, output, points)
 
-    def sort_population_by_fitness(individual):
-        return individual.fitness
+    print("Generations =", generations)
+    print("Population =", P)
+    print("Accepted solution=", accepted_solution)
+    print("Mutation probability =", mutation_p)
+    print('Mutation interval = [' + str(-mutation_a) + ', ' + str(mutation_a) + ']')
+    print("Crossing method =", config['crossing_method'])
+    print("Selection method =", config['selection_method'])
+    print("Random min =", random_min)
+    print("Random max =", random_max)
+    print("Points =", points)
+    print("Output =", output)
 
-    print("Generations = ", generations)
-    print("Mutation probability = ", mutation_p)
-    print('Mutation interval = [', -mutation_a, ',', mutation_a, ']')
-    print("Crossing_method = ", crossing_method)
-    print("Population = ", P)
-    print("Random_min = ", random_min)
-    print("Random_max = ", random_max)
-    print("Points = ", points)
-    print("Output = ", output)
+    print("\n\n--------------------------------------------------\n\n")
+    print("START...\n")
 
     population = generate_initial_population(P, fitness, random_min, random_max)
-    population = sorted(population, key=sort_population_by_fitness)
+    population = sorted(population, key=sort_population_by_fitness, reverse=True)
     stop = 0
     t = 0
+    best_fitness = []
     while stop == 0:
         print("Generation: ", t)
         new_population = create_next_population(population, fitness, crossing_method, mutation_p, mutation_a, P)
-        aux = selection_method(np.append(population, new_population))
-        population = sorted(aux, key=sort_population_by_fitness)
-        print("Best fitness individual: ", population[0])
-        if population[0].fitness < accepted_solution or t > 500:
-            print("Algorithm stopped")
+        aux = selection_method(np.append(population, new_population), P)
+        population = sorted(aux, key=sort_population_by_fitness, reverse=True)
+        print("-- Best individual --")
+        print(population[0])
+        print("\n")
+        if population[0].fitness >= accepted_solution or t > generations:
+            print("STOP\n")
+            print("-- Best Solution --")
+            print(population[0])
             stop = 1
-        t = t+1
+        t = t + 1
+        best_fitness.append(population[0].fitness)
+
+    # -- Graphics --
+    plt.plot(best_fitness)
+    plt.ylabel('fitness')
+    plt.xlabel('generations')
+    plt.show()
     return 0
 
 
 print("Starting genetic algorithm...")
 algorithm()
-print("- End -")
+print("- END -")

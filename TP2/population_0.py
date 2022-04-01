@@ -5,10 +5,9 @@ class Individual:
     def __init__(self, genotype, fitness):
         self.genotype = genotype
         self.fitness = fitness
-        
-    def print(self):
-        print(self.genotype)
-        print('Fitness:', self.fitness)
+
+    def __repr__(self):
+        return "Genotype: " + str(self.genotype) + '\n' + "Fitness: " + str(self.fitness)
 
 
 def generate_initial_population(P, fitness, random_min, random_max):

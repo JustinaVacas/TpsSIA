@@ -55,7 +55,7 @@ def roulette_wheel(population, P):
         while x < len(probabilities) and probabilities[x] <= num:
             x += 1
         if x != 0:
-            selected.append(population[x - 1])
+            selected.append(population[x - 1][0])
             #para borrar de population
             # TODO que pasa si x es 0?
             new_population = []
@@ -152,16 +152,16 @@ def truncated_selection(population, P, k):
     fitness = fitness[k:]
     return random.sample(fitness, P)
 
-# individual1 = Individual(numpy.random.uniform(-10, 10, 11), 1)
-# individual2 = Individual(numpy.random.uniform(-10, 10, 11), 2)
-# individual3 = Individual(numpy.random.uniform(-10, 10, 11), 3)
-# individual4 = Individual(numpy.random.uniform(-10, 10, 11), 4)
-# individual5 = Individual(numpy.random.uniform(-10, 10, 11), 5)
-# individual6 = Individual(numpy.random.uniform(-10, 10, 11), 6)
-# individual7 = Individual(numpy.random.uniform(-10, 10, 11), 7)
-# individual8 = Individual(numpy.random.uniform(-10, 10, 11), 8)
-# individual9 = Individual(numpy.random.uniform(-10, 10, 11), 9)
-# individual10 = Individual(numpy.random.uniform(-10, 10, 11), 10)
-# population = [individual1, individual2, individual3, individual4, individual5, individual6, individual7, individual8,
-#               individual9, individual10]
-# print(rank_selection(population, len(population) // 2))
+individual1 = Individual(numpy.random.uniform(-10, 10, 11), 1)
+individual2 = Individual(numpy.random.uniform(-10, 10, 11), 2)
+individual3 = Individual(numpy.random.uniform(-10, 10, 11), 3)
+individual4 = Individual(numpy.random.uniform(-10, 10, 11), 4)
+individual5 = Individual(numpy.random.uniform(-10, 10, 11), 5)
+individual6 = Individual(numpy.random.uniform(-10, 10, 11), 6)
+individual7 = Individual(numpy.random.uniform(-10, 10, 11), 7)
+individual8 = Individual(numpy.random.uniform(-10, 10, 11), 8)
+individual9 = Individual(numpy.random.uniform(-10, 10, 11), 9)
+individual10 = Individual(numpy.random.uniform(-10, 10, 11), 10)
+population = [individual1, individual2, individual3, individual4, individual5, individual6, individual7, individual8,
+              individual9, individual10]
+print(rank_selection(population, len(population) // 2))

@@ -87,8 +87,8 @@ def tournament_select(population):
             else:
                 p.append(population[points[i + 1]])
         else:  # selecciono el menos apto
-            if population[i].fitness > population[i + 1]:
-                p.append(population[i + 1])
+            if population[points[i]].fitness > population[points[i + 1]].fitness:
+                p.append(population[points[i + 1]])
             else:
                 p.append(population[points[i]])
     if p[0].fitness > p[1].fitness:

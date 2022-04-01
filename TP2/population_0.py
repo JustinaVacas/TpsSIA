@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 
 
 class Individual:
@@ -11,15 +11,14 @@ class Individual:
         print('Fitness:', self.fitness)
 
 
-def generate_initial_population():
-    P = 1000
+def generate_initial_population(P, fitness, random_min, random_max):
     population = []
     i = 0
 
     while i < P:
-        genotype = numpy.random.uniform(-1000, 1000, 11)
-        fitness = 0
-        X = Individual(genotype, fitness)
+        genotype = np.random.uniform(random_min, random_max, 11)
+        aux = fitness(genotype)
+        X = Individual(genotype, aux)
         population.append(X)
         i += 1
 

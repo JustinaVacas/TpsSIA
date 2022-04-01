@@ -1,28 +1,28 @@
 import random
-from function import error
-from population_0 import generate_initial_population
+from population_0 import Individual
 
 
-def apply_fitness(old_population):
-    for X in old_population:
-        X.fitness = error(X)
+def select(population, i):
+    return population[i], population[i + 1]
 
 
-def select(population):
-    return population[1], population[2]
+def mutate(x, p, a):
+    for i in range(len(x)):
+        if random.uniform(0, 1) > p:
+            r = random.uniform(-a, a)
+            x[i] = x[i] + r
+    print(x)
 
 
-'''
-def create_next_population(population):
+def create_next_population(population, fitness, crossing_method, mutation_p, mutation_a, P):
     i = 0
+    new_population = []
     while i < P:
-    x1, x2 = select(population)
-    n1, n2 = cross(x1, x2)
-'''
+        x1, x2 = select(population, 2 * i)
+        n1, n2 = crossing_method(x1.genotype, x2.genotype)
+        mutate(n1, mutation_p, mutation_a)
+        mutate(n2, mutation_p, mutation_a)
+        new_population.append(Individual(n1, fitness(n1)))
+        new_population.append(Individual(n2, fitness(n1)))
 
-
-def algorithm():
-    population = generate_initial_population()
-    apply_fitness(population)
-    # new_population = create_next_population(population)
-
+    return new_population

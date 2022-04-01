@@ -44,11 +44,59 @@ def rank_selection(population):
 
 
 def tournament_selection(population):
-    return population
+    u = random.uniform(0.5, 1)
+    points = random.sample(range(1, len(population[0])), 4).sort
+    r = random.uniform(0, 1)
+    p = []
+    for i in range(0, 3, 2):
+        if r < u:  # selecciono el mas apto
+            if population[i].fitness > population[i + 1]:
+                p.append(population[i])
+            else:
+                p.append(population[i + 1])
+        else:  # selecciono el menos apto
+            if population[i].fitness > population[i + 1]:
+                p.append(population[i + 1])
+            else:
+                p.append(population[i])
+    if p[0].fitness > p[1].fitness:
+        return p[0]
+    return p[1]
 
 
-def boltzmann_selection(population):
-    return population
+def roulette_wheel_boltzmann(population):
+    total_fitness = 0
+    probabilities = []
+    selected = []
+    for i in range(len(population)):
+        total_fitness += population[i][1]
+    for j in range(len(population)):
+        probabilities.append(population[j][1] / total_fitness)
+    while len(selected) == 0:
+        num = random.uniform(0, 1)
+        x = 0
+        for ind in range(len(population)):
+            if x + 1 == len(probabilities):
+                break
+            if probabilities[x] < num <= probabilities[x + 1]:
+                selected.append(population[ind])
+                break
+            x += 1
+    return Individual.print(selected[0][0][0])
+
+
+def boltzmann_selection(population, k, tc, to, t, output, points):
+    tc = tc
+    to = to
+    T = tc + (to - tc) * math.exp(- k * t)
+    new_population = []
+    aux = 0
+    for i in range(len(population)):
+        aux += math.exp((error(population[i].genotype, output, points)) / T)
+    for j in range(len(population)):
+        ve = math.exp((error(population[j].genotype, output, points)) / T) / aux
+        new_population.append([[population[j]], ve])
+    return roulette_wheel_boltzmann(new_population)
 
 
 def truncated_selection(population, k):

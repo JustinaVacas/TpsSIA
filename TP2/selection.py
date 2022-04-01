@@ -19,48 +19,55 @@ def elite_selection(population, P):
 
 
 def roulette_wheel_selection(population, P):
-    total_fitness = 0
-    probabilities = []
     selected = []
-    for i in range(len(population)):
-        total_fitness += population[i].fitness
-    for j in range(len(population)):
-        probabilities.append(population[j].fitness / total_fitness)
     aux = 0
-    while aux != P:
+    while aux < P:
+        total_fitness = 0
+        probabilities = []
+        for i in range(len(population)):
+            total_fitness += population[i].fitness
+        for j in range(len(population)):
+            probabilities.append(population[j].fitness / total_fitness)
         num = random.uniform(0, 1)
         x = 0
-        for ind in range(len(population)):
-            if x + 1 == len(probabilities):
-                break
-            if probabilities[x] < num <= probabilities[x + 1]:
-                selected.append(population[ind])
-                aux += 1
+        while x < len(probabilities) and probabilities[x] <= num:
             x += 1
+        selected.append(population[x - 1])
+        #TODO que pasa si x es 0?
+        population = numpy.delete(population, x - 1)
+        aux += 1
+
     return selected
 
 
 def roulette_wheel(population, P):
-    total_fitness = 0
-    probabilities = []
     selected = []
-    for i in range(len(population)):
-        total_fitness += population[i][1]
-    for j in range(len(population)):
-        probabilities.append(population[j][1] / total_fitness)
-    for p in range(P):
+    aux = 0
+    while aux < P:
+        total_fitness = 0
+        probabilities = []
+        for i in range(len(population)):
+            total_fitness += population[i][1]
+        for j in range(len(population)):
+            probabilities.append(population[j][1] / total_fitness)
         num = random.uniform(0, 1)
         x = 0
-        for ind in range(len(population)):
-            if x + 1 == len(probabilities):
-                break
-            if probabilities[x] < num <= probabilities[x + 1]:
-                selected.append(population[ind])
+        while x < len(probabilities) and probabilities[x] <= num:
             x += 1
+        if x != 0:
+            selected.append(population[x - 1])
+            #para borrar de population
+            # TODO que pasa si x es 0?
+            new_population = []
+            for i in range(len(population)):
+                if i != (x-1):
+                    new_population.append(population[i])
+            population = new_population
+            aux += 1
     return selected
 
 
-def rank_selection(population):
+def rank_selection(population, P):
     new_population = []
     rank = list()
     for i in range(len(population)):
@@ -71,7 +78,7 @@ def rank_selection(population):
         f += (j - rank[j - 1][1]) / j
     for pi in range(1, len(rank) + 1):
         p = ((pi - rank[pi - 1][1]) / pi) / f
-        new_population.append([rank[pi][0], p])
+        new_population.append([rank[pi-1][0], p])
     return roulette_wheel(new_population, len(new_population) // 2)
 
 
@@ -144,18 +151,17 @@ def truncated_selection(population, P, k):
     fitness = sorted(population, key=lambda x: x.fitness)
     fitness = fitness[k:]
     return random.sample(fitness, P)
-#
-#
-# individual1 = Individual(numpy.random.uniform(-1000, 1000, 11), 1)
-# individual2 = Individual(numpy.random.uniform(-1000, 1000, 11), 2)
-# individual3 = Individual(numpy.random.uniform(-1000, 1000, 11), 3)
-# individual4 = Individual(numpy.random.uniform(-1000, 1000, 11), 4)
-# individual5 = Individual(numpy.random.uniform(-1000, 1000, 11), 5)
-# individual6 = Individual(numpy.random.uniform(-1000, 1000, 11), 6)
-# individual7 = Individual(numpy.random.uniform(-1000, 1000, 11), 7)
-# individual8 = Individual(numpy.random.uniform(-1000, 1000, 11), 8)
-# individual9 = Individual(numpy.random.uniform(-1000, 1000, 11), 9)
-# individual10 = Individual(numpy.random.uniform(-1000, 1000, 11), 10)
+
+# individual1 = Individual(numpy.random.uniform(-10, 10, 11), 1)
+# individual2 = Individual(numpy.random.uniform(-10, 10, 11), 2)
+# individual3 = Individual(numpy.random.uniform(-10, 10, 11), 3)
+# individual4 = Individual(numpy.random.uniform(-10, 10, 11), 4)
+# individual5 = Individual(numpy.random.uniform(-10, 10, 11), 5)
+# individual6 = Individual(numpy.random.uniform(-10, 10, 11), 6)
+# individual7 = Individual(numpy.random.uniform(-10, 10, 11), 7)
+# individual8 = Individual(numpy.random.uniform(-10, 10, 11), 8)
+# individual9 = Individual(numpy.random.uniform(-10, 10, 11), 9)
+# individual10 = Individual(numpy.random.uniform(-10, 10, 11), 10)
 # population = [individual1, individual2, individual3, individual4, individual5, individual6, individual7, individual8,
 #               individual9, individual10]
-# roulette_wheel_selection(population, 5)
+# print(rank_selection(population, len(population) // 2))

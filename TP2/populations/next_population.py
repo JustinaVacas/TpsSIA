@@ -1,6 +1,5 @@
 import random
-from population_0 import Individual
-from crossover import simple_crossover, multiple_crossover, uniform_crossover
+from TP2.populations.population_0 import Individual
 
 
 def select(population, i):

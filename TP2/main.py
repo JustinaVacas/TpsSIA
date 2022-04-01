@@ -2,11 +2,11 @@ import json
 import sys
 import numpy as np
 
-from crossover import simple_crossover, uniform_crossover, multiple_crossover
-from population_0 import generate_initial_population, Individual
-from next_population import create_next_population
-from function import error
-from selection import elite_selection, roulette_wheel_selection, rank_selection, boltzmann_selection, \
+from TP2.util.crossover import simple_crossover, uniform_crossover, multiple_crossover
+from TP2.populations.population_0 import generate_initial_population
+from TP2.populations.next_population import create_next_population
+from TP2.util.function import error
+from TP2.util.selection import elite_selection, roulette_wheel_selection, rank_selection, boltzmann_selection, \
     tournament_selection, truncated_selection, sort_population_by_fitness
 
 import matplotlib.pyplot as plt

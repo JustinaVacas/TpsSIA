@@ -1,3 +1,4 @@
+import math
 import random
 import numpy
 from TP2.population_0 import Individual
@@ -40,7 +41,6 @@ def rank_selection(population):
         fitness.append(population[i])
     fitness.sort(key=lambda x: x.fitness, reverse=True)
     '''
-    return population
 
 
 def tournament_selection(population):

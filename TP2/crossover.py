@@ -27,9 +27,9 @@ def simple_crossover(x1, x2):
 
 
 def multiple_crossover(x1, x2):
-    points = random.sample(range(1, len(x1)), 3)
+    c = random.randint(2, len(x1)-1)
+    points = random.sample(range(1, len(x1)), c)
     points.sort()
-    # print(points)
     y1 = list(x1[:])
     y2 = list(x2[:])
     for j in range(len(points)):

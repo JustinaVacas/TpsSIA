@@ -108,7 +108,11 @@ def tournament_selection(population, P):
     for i in range(P):
         aux = tournament_select(population)
         new_population.append(aux)
-        population.remove(aux)
+        new_pop = []
+        for i in range(len(population)):
+            if population[i] != aux:
+                new_pop.append(population[i])
+        population = new_pop
 
     return new_population
 
@@ -143,8 +147,8 @@ def boltzmann_selection(population, k, tc, to, t, output, points):
         aux += math.exp((error(population[i].genotype, output, points)) / T)
     for j in range(len(population)):
         ve = math.exp((error(population[j].genotype, output, points)) / T) / aux
-        new_population.append([[population[j]], ve])
-    return roulette_wheel_boltzmann(new_population, len(population) // 2)
+        new_population.append([population[j], ve])
+    return roulette_wheel(new_population, len(population) // 2)
 
 
 def truncated_selection(population, P, k):
@@ -164,4 +168,5 @@ individual9 = Individual(numpy.random.uniform(-10, 10, 11), 9)
 individual10 = Individual(numpy.random.uniform(-10, 10, 11), 10)
 population = [individual1, individual2, individual3, individual4, individual5, individual6, individual7, individual8,
               individual9, individual10]
-print(rank_selection(population, len(population) // 2))
+print("ranking ", rank_selection(population, len(population) // 2))
+print("boltzmann ", boltzmann_selection(population, 1, 5, 40, 1, [0, 1, 2], [[4.4793, -4.0765, -4.0765], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.8830]]))

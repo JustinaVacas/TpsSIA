@@ -57,6 +57,10 @@ def algorithm():
     random_min = config['random_min']
     random_max = config['random_max']
     accepted_solution = config['accepted_solution']
+    k = config['k']
+    tc = config['tc']
+    to = config['to']
+    t = config['t']
 
     if 'points' in config and len(config['points']) == 3:
         points = config['points']
@@ -82,6 +86,10 @@ def algorithm():
     print("Random max =", random_max)
     print("Points =", points)
     print("Output =", output)
+    print("k =", k)
+    print("tc =", tc)
+    print("to =", to)
+    print("t =", t)
 
     print("\n\n--------------------------------------------------\n\n")
     print("START...\n")
@@ -94,7 +102,14 @@ def algorithm():
     while stop == 0:
         print("Generation: ", t)
         new_population = create_next_population(population, fitness, crossing_method, mutation_p, mutation_a, P)
-        aux = selection_method(np.append(population, new_population), P)
+
+        if config['selection_method'] == 'boltzmann':
+            aux = selection_method(np.append(population, new_population), k, tc, to, t, output, points)
+        elif config['selection_method'] == 'truncated':
+            aux = selection_method(np.append(population, new_population), P, k)
+        else:
+            aux = selection_method(np.append(population, new_population), P)
+
         population = sorted(aux, key=sort_population_by_fitness, reverse=True)
         print("-- Best individual --")
         print(population[0])

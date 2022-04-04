@@ -2,8 +2,8 @@ import math
 import random
 import numpy
 
-from TP2.function import error
-from TP2.population_0 import Individual
+from TP2.util.function import error
+from TP2.populations.population_0 import Individual
 
 
 def sort_population_by_fitness(individual):

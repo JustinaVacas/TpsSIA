@@ -105,11 +105,9 @@ def algorithm():
         new_population = sorted(new_population, key=sort_population_by_fitness, reverse=True)
 
         if config['selection_method'] == 'boltzmann':
-            aux = selection_method(np.append(population, new_population), k, tc, to, t, output, points)
+            aux = selection_method(np.append(population, new_population), P, k, tc, to, t, fitness)
         elif config['selection_method'] == 'rank':
-            aux = selection_method(np.append(population, new_population), P)
-            for i in range(len(aux)):
-                aux[i].fitness = fitness(aux[i].genotype)
+            aux = selection_method(np.append(population, new_population), P, fitness)
         elif config['selection_method'] == 'truncated':
             aux = selection_method(np.append(population, new_population), P, k)
         else:

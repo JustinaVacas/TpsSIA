@@ -35,5 +35,9 @@ El archivo de configuracion (.json) esta compuesto por los siguientes parametros
 - random_min: número mínimo para generación de cromosomas
 - random_max: número máximo para generación de cromosomas
 - points: array de arrays con los valores de entrada (por default: [[4.4793, -4.0765, -4.0765], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.8830]])
-- output: array de los valores de salida por default: [0,1,2]
+- output: array de los valores de salida por default: [0,1,1]
 - accepted_solution: valor de fitness aceptado (condición de corte por valor de fitness)
+- k: valor a elegir
+- tc: factor de cambio
+- to: temperatura inicial
+- t: temperatura

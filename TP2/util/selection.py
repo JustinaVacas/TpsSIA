@@ -32,8 +32,9 @@ def roulette_wheel_selection(population, P):
         x = 0
         while x < len(probabilities) and probabilities[x] <= num:
             x += 1
+        if x == 0:
+            x = 1
         selected.append(population[x - 1])
-        #TODO que pasa si x es 0?
         population = numpy.delete(population, x - 1)
         aux += 1
 
@@ -54,32 +55,30 @@ def roulette_wheel(population, P):
         x = 0
         while x < len(probabilities) and probabilities[x] <= num:
             x += 1
-        if x != 0:
-            selected.append(population[x - 1][0])
-            #para borrar de population
-            # TODO que pasa si x es 0?
-            new_population = []
-            for i in range(len(population)):
-                if i != (x-1):
-                    new_population.append(population[i])
-            population = new_population
-            aux += 1
+        if x == 0:
+            x = 1
+
+        selected.append(population[x - 1][0])
+        new_population = []
+        for i in range(len(population)):
+            if i != (x - 1):
+                new_population.append(population[i])
+        population = new_population
+        aux += 1
     return selected
 
 
 def rank_selection(population, P):
-    new_population = []
-    rank = list()
+
+    def fitness_inverse(n, total):
+        return (2 * total - n) / (2 * total)
+
     for i in range(len(population)):
-        rank.append([population[i], population[i].fitness])
-    rank = sorted(rank, key=lambda ranking: ranking[1], reverse=True)
-    f = 0
-    for j in range(1, len(rank) + 1):
-        f += (j - rank[j - 1][1]) / j
-    for pi in range(1, len(rank) + 1):
-        p = ((pi - rank[pi - 1][1]) / pi) / f
-        new_population.append([rank[pi-1][0], p])
-    return roulette_wheel(new_population, len(new_population) // 2)
+        population[i].fitness = fitness_inverse(i, 2 * P)
+
+    population = sorted(population, key=sort_population_by_fitness, reverse=True)
+    new_population = roulette_wheel_selection(population, P)
+    return new_population
 
 
 def tournament_select(population):
@@ -156,17 +155,17 @@ def truncated_selection(population, P, k):
     fitness = fitness[k:]
     return random.sample(fitness, P)
 
-individual1 = Individual(numpy.random.uniform(-10, 10, 11), 1)
-individual2 = Individual(numpy.random.uniform(-10, 10, 11), 2)
-individual3 = Individual(numpy.random.uniform(-10, 10, 11), 3)
-individual4 = Individual(numpy.random.uniform(-10, 10, 11), 4)
-individual5 = Individual(numpy.random.uniform(-10, 10, 11), 5)
-individual6 = Individual(numpy.random.uniform(-10, 10, 11), 6)
-individual7 = Individual(numpy.random.uniform(-10, 10, 11), 7)
-individual8 = Individual(numpy.random.uniform(-10, 10, 11), 8)
-individual9 = Individual(numpy.random.uniform(-10, 10, 11), 9)
-individual10 = Individual(numpy.random.uniform(-10, 10, 11), 10)
-population = [individual1, individual2, individual3, individual4, individual5, individual6, individual7, individual8,
-              individual9, individual10]
-print("ranking ", rank_selection(population, len(population) // 2))
-print("boltzmann ", boltzmann_selection(population, 1, 5, 40, 1, [0, 1, 2], [[4.4793, -4.0765, -4.0765], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.8830]]))
+# individual1 = Individual(numpy.random.uniform(-10, 10, 11), 1)
+# individual2 = Individual(numpy.random.uniform(-10, 10, 11), 2)
+# individual3 = Individual(numpy.random.uniform(-10, 10, 11), 3)
+# individual4 = Individual(numpy.random.uniform(-10, 10, 11), 4)
+# individual5 = Individual(numpy.random.uniform(-10, 10, 11), 5)
+# individual6 = Individual(numpy.random.uniform(-10, 10, 11), 6)
+# individual7 = Individual(numpy.random.uniform(-10, 10, 11), 7)
+# individual8 = Individual(numpy.random.uniform(-10, 10, 11), 8)
+# individual9 = Individual(numpy.random.uniform(-10, 10, 11), 9)
+# individual10 = Individual(numpy.random.uniform(-10, 10, 11), 10)
+# population = [individual1, individual2, individual3, individual4, individual5, individual6, individual7, individual8,
+#               individual9, individual10]
+# print("ranking ", rank_selection(population, len(population) // 2))
+# print("boltzmann ", boltzmann_selection(population, 1, 5, 40, 1, [0, 1, 2], [[4.4793, -4.0765, -4.0765], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.8830]]))

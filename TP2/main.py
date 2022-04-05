@@ -95,16 +95,20 @@ def algorithm():
     print("START...\n")
 
     population = generate_initial_population(P, fitness, random_min, random_max)
-    population = sorted(population, key=sort_population_by_fitness, reverse=True)
     stop = 0
     t = 0
     best_fitness = []
     while stop == 0:
         print("Generation: ", t)
         new_population = create_next_population(population, fitness, crossing_method, mutation_p, mutation_a, P)
+        new_population = sorted(new_population, key=sort_population_by_fitness, reverse=True)
 
         if config['selection_method'] == 'boltzmann':
             aux = selection_method(np.append(population, new_population), k, tc, to, t, output, points)
+        elif config['selection_method'] == 'rank':
+            aux = selection_method(np.append(population, new_population), P)
+            for i in range(len(aux)):
+                aux[i].fitness = fitness(aux[i].genotype)
         elif config['selection_method'] == 'truncated':
             aux = selection_method(np.append(population, new_population), P, k)
         else:

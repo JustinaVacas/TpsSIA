@@ -3,7 +3,7 @@
   "mutation_p": 0.05,
   "mutation_a": 1,
   "crossing_method": "simple",
-  "selection_method": "roulette",
+  "selection_method": "elite",
   "P": 1000,
   "random_min": -10,
   "random_max": 10,

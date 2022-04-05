@@ -40,4 +40,3 @@ El archivo de configuracion (.json) esta compuesto por los siguientes parametros
 - k: valor a elegir
 - tc: factor de cambio
 - to: temperatura inicial
-- t: temperatura

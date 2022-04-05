@@ -61,7 +61,6 @@ def algorithm():
     k = config['k']
     tc = config['tc']
     to = config['to']
-    t = config['t']
 
     if 'points' in config and len(config['points']) == 3:
         points = config['points']
@@ -90,7 +89,6 @@ def algorithm():
     print("k =", k)
     print("tc =", tc)
     print("to =", to)
-    print("t =", t)
 
     print("\n\n--------------------------------------------------\n\n")
     print("START...\n")

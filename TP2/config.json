@@ -1,9 +1,9 @@
 {
-  "generations": 1000,
+  "generations": 500,
   "mutation_p": 0.05,
   "mutation_a": 1,
   "crossing_method": "simple",
-  "selection_method": "roulette",
+  "selection_method": "truncated",
   "P": 100,
   "random_min": -10,
   "random_max": 10,

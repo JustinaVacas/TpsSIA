@@ -29,6 +29,7 @@ def roulette_wheel_selection(population, P):
             if current > num:
                 selected.append(i[0])
                 population.remove(i[0])
+                break
         aux += 1
 
     return selected

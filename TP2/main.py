@@ -1,6 +1,5 @@
 import json
 import sys
-import numpy as np
 import time
 
 from TP2.util.crossover import simple_crossover, uniform_crossover, multiple_crossover
@@ -105,13 +104,13 @@ def algorithm():
         new_population = sorted(new_population, key=sort_population_by_fitness, reverse=True)
 
         if config['selection_method'] == 'boltzmann':
-            aux = selection_method(np.append(population, new_population), P, k, tc, to, t, fitness)
+            aux = selection_method(population + new_population, P, k, tc, to, t, fitness)
         elif config['selection_method'] == 'rank':
-            aux = selection_method(np.append(population, new_population), P, fitness)
+            aux = selection_method(population + new_population, P, fitness)
         elif config['selection_method'] == 'truncated':
-            aux = selection_method(np.append(population, new_population), P, k)
+            aux = selection_method(population + new_population, P, k)
         else:
-            aux = selection_method(np.append(population, new_population), P)
+            aux = selection_method(population + new_population, P)
 
         population = sorted(aux, key=sort_population_by_fitness, reverse=True)
         print("-- Best individual --")

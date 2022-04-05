@@ -1,6 +1,7 @@
 import math
 import random
 import numpy
+import numpy as np
 
 
 def sort_population_by_fitness(individual):
@@ -19,20 +20,17 @@ def roulette_wheel_selection(population, P):
     selected = []
     aux = 0
     while aux < P:
-        total_fitness = 0
         probabilities = []
-        for i in range(len(population)):
-            total_fitness += population[i].fitness
+        total_fitness = sum([c.fitness for c in population])
         for j in range(len(population)):
-            probabilities.append(population[j].fitness / total_fitness)
+            probabilities.append([population[j], population[j].fitness / total_fitness])
         num = random.uniform(0, 1)
-        x = 0
-        while x < len(probabilities) and probabilities[x] <= num:
-            x += 1
-        if x == 0:
-            x = 1
-        selected.append(population[x - 1])
-        population = numpy.delete(population, x - 1)
+        current = 0
+        for i in probabilities:
+            current += i[1]
+            if current > num:
+                selected.append(i[0])
+                population.remove(i[0])
         aux += 1
 
     return selected

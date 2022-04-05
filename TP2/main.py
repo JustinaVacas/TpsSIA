@@ -1,6 +1,7 @@
 import json
 import sys
 import numpy as np
+import time
 
 from TP2.util.crossover import simple_crossover, uniform_crossover, multiple_crossover
 from TP2.populations.population_0 import generate_initial_population
@@ -94,6 +95,8 @@ def algorithm():
     print("\n\n--------------------------------------------------\n\n")
     print("START...\n")
 
+    start_time = time.process_time()
+
     population = generate_initial_population(P, fitness, random_min, random_max)
     stop = 0
     t = 0
@@ -123,6 +126,8 @@ def algorithm():
             print("-- Best Solution --")
             print(population[0])
             stop = 1
+            end_time = time.process_time()
+            print('Tiempo: ', end_time - start_time)
         t = t + 1
         best_fitness.append(population[0].fitness)
 

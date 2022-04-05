@@ -154,18 +154,3 @@ def truncated_selection(population, P, k):
     fitness = sorted(population, key=lambda x: x.fitness)
     fitness = fitness[k:]
     return random.sample(fitness, P)
-
-# individual1 = Individual(numpy.random.uniform(-10, 10, 11), 1)
-# individual2 = Individual(numpy.random.uniform(-10, 10, 11), 2)
-# individual3 = Individual(numpy.random.uniform(-10, 10, 11), 3)
-# individual4 = Individual(numpy.random.uniform(-10, 10, 11), 4)
-# individual5 = Individual(numpy.random.uniform(-10, 10, 11), 5)
-# individual6 = Individual(numpy.random.uniform(-10, 10, 11), 6)
-# individual7 = Individual(numpy.random.uniform(-10, 10, 11), 7)
-# individual8 = Individual(numpy.random.uniform(-10, 10, 11), 8)
-# individual9 = Individual(numpy.random.uniform(-10, 10, 11), 9)
-# individual10 = Individual(numpy.random.uniform(-10, 10, 11), 10)
-# population = [individual1, individual2, individual3, individual4, individual5, individual6, individual7, individual8,
-#               individual9, individual10]
-# print("ranking ", rank_selection(population, len(population) // 2))
-# print("boltzmann ", boltzmann_selection(population, 1, 5, 40, 1, [0, 1, 2], [[4.4793, -4.0765, -4.0765], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.8830]]))

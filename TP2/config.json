@@ -3,7 +3,7 @@
   "mutation_p": 0.05,
   "mutation_a": 1,
   "crossing_method": "simple",
-  "selection_method": "truncated",
+  "selection_method": "elite",
   "P": 100,
   "random_min": -10,
   "random_max": 10,

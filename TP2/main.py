@@ -127,9 +127,12 @@ def algorithm():
         best_fitness.append(population[0].fitness)
 
     # -- Graphics --
-    plt.plot(best_fitness)
-    plt.ylabel('fitness')
-    plt.xlabel('generations')
+    plt.plot(best_fitness, color='tab:red')
+    plt.ylabel('Fitness')
+    plt.xlabel('Generations')
+    plt.ylim([best_fitness[0], 3.0])
+    plt.title(config['selection_method'].capitalize() + ' selection ' + ' - ' + config[
+        'crossing_method'].capitalize() + ' crossing')
     plt.show()
     return 0
 

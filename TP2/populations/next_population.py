@@ -21,8 +21,10 @@ def create_next_population(population, fitness, crossing_method, mutation_p, mut
         n1, n2 = crossing_method(x1.genotype, x2.genotype)
         mutate(n1, mutation_p, mutation_a)
         mutate(n2, mutation_p, mutation_a)
-        new_population.append(Individual(n1, fitness(n1)))
-        new_population.append(Individual(n2, fitness(n2)))
+        f1, error1 = fitness(n1)
+        f2, error2 = fitness(n2)
+        new_population.append(Individual(n1, f1, error1))
+        new_population.append(Individual(n2, f2, error2))
         i += 2
 
     return new_population

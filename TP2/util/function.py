@@ -1,5 +1,4 @@
 import math
-import numpy as np
 
 
 def function(individual, point):
@@ -16,12 +15,11 @@ def function(individual, point):
 
 
 def g(x):
-    return (np.exp(x)) / (1 + np.exp(x))
+    return (math.exp(x)) / (1 + math.exp(x))
 
 
 def error(individual, output, points):
     aux = 0
     for i in range(3):
-        aux += np.float_power((output[i] - function(individual, points[i])), 2)
-
-    return 3-aux
+        aux += (output[i] - function(individual, points[i]))**2
+    return 3 - aux, aux

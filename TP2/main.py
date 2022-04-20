@@ -19,45 +19,13 @@ with open(sys.argv[1], 'r') as configuration:
     config = json.load(configuration)
 
 generations = config['generations']
-mutation_p = config['mutation_p']
-mutation_a = config['mutation_a']
 
-# Default 'simple'
-crossing_method = simple_crossover
-if 'crossing_method' in config:
-    if config['crossing_method'] == 'simple':
-        crossing_method = simple_crossover
-    elif config['crossing_method'] == 'multiple':
-        crossing_method = multiple_crossover
-    elif config['crossing_method'] == 'uniform':
-        crossing_method = uniform_crossover
-
-# Default 'elite'
-selection_method = elite_selection
-if 'selection_method' in config:
-    if config['selection_method'] == 'elite':
-        selection_method = elite_selection
-    if config['selection_method'] == 'roulette':
-        selection_method = roulette_wheel_selection
-    if config['selection_method'] == 'rank':
-        selection_method = rank_selection
-    if config['selection_method'] == 'tournament':
-        selection_method = tournament_selection
-    if config['selection_method'] == 'boltzmann':
-        selection_method = boltzmann_selection
-    if config['selection_method'] == 'truncated':
-        selection_method = truncated_selection
-
-P = config['P']
-if P % 2 != 0:
-    P = P + 1
+P0 = config['P']
+if P0 % 2 != 0:
+    P0 = P0 + 1
 
 random_min = config['random_min']
 random_max = config['random_max']
-accepted_solution = config['accepted_solution']
-k = config['k']
-tc = config['tc']
-to = config['to']
 
 if 'points' in config and len(config['points']) == 3:
     points = config['points']
@@ -75,6 +43,43 @@ def fitness(genotype):
 
 
 def algorithm(pop_0):
+
+    P = config['P']
+    if P % 2 != 0:
+        P = P + 1
+
+    mutation_p = config['mutation_p']
+    mutation_a = config['mutation_a']
+    accepted_solution = config['accepted_solution']
+    k = config['k']
+    tc = config['tc']
+    to = config['to']
+    # Default 'simple'
+    crossing_method = simple_crossover
+    if 'crossing_method' in config:
+        if config['crossing_method'] == 'simple':
+            crossing_method = simple_crossover
+        elif config['crossing_method'] == 'multiple':
+            crossing_method = multiple_crossover
+        elif config['crossing_method'] == 'uniform':
+            crossing_method = uniform_crossover
+
+    # Default 'elite'
+    selection_method = elite_selection
+    if 'selection_method' in config:
+        if config['selection_method'] == 'elite':
+            selection_method = elite_selection
+        if config['selection_method'] == 'roulette':
+            selection_method = roulette_wheel_selection
+        if config['selection_method'] == 'rank':
+            selection_method = rank_selection
+        if config['selection_method'] == 'tournament':
+            selection_method = tournament_selection
+        if config['selection_method'] == 'boltzmann':
+            selection_method = boltzmann_selection
+        if config['selection_method'] == 'truncated':
+            selection_method = truncated_selection
+
     #
     # print("Generations =", generations)
     # print("Population =", P)
@@ -139,7 +144,7 @@ def average():
     ax.set_ylabel("Error")
 
     for i in range(10):
-        f = algorithm(generate_initial_population(P, fitness, random_min, random_max))
+        f = algorithm(generate_initial_population(P0, fitness, random_min, random_max))
         ax.plot(f, 'C' + str(i), label='Attempt ' + str(i))
 
     plt.ylim()
@@ -148,7 +153,7 @@ def average():
 
 
 def m_prob():
-    pop_0 = generate_initial_population(P, fitness, random_min, random_max)
+    pop_0 = generate_initial_population(P0, fitness, random_min, random_max)
 
     # -- Graphics --
     fig, ax = plt.subplots()
@@ -156,7 +161,7 @@ def m_prob():
     ax.set_xlabel("Generations")
     ax.set_ylabel("Error")
 
-    config['mutation_p'] = 0.01
+    config['mutation_p'] = 0
     f = algorithm(pop_0)
     ax.plot(f, 'C1', label='m_prob = ' + str(config['mutation_p']))
 
@@ -164,7 +169,7 @@ def m_prob():
     f = algorithm(pop_0)
     ax.plot(f, 'C2', label='m_prob = ' + str(config['mutation_p']))
 
-    config['mutation_p'] = 0.1
+    config['mutation_p'] = 0.2
     f = algorithm(pop_0)
     ax.plot(f, 'C3', label='m_prob = ' + str(config['mutation_p']))
 
@@ -179,7 +184,7 @@ def m_range():
     ax.set_title("Relationship between error and generations - " + config['selection_method'] + " selection")
     ax.set_xlabel("Generations")
     ax.set_ylabel("Error")
-    pop_0 = generate_initial_population(P, fitness, random_min, random_max)
+    pop_0 = generate_initial_population(P0, fitness, random_min, random_max)
 
     for i in range(5):
         f = algorithm(pop_0)
@@ -192,7 +197,7 @@ def m_range():
 
 
 def crossing_test():
-    pop_0 = generate_initial_population(P, fitness, random_min, random_max)
+    pop_0 = generate_initial_population(P0, fitness, random_min, random_max)
 
     # -- Graphics --
     fig, ax = plt.subplots()
@@ -218,10 +223,10 @@ def crossing_test():
 
 
 def main():
-    algorithm(generate_initial_population(P, fitness, random_min, random_max))
+    algorithm(generate_initial_population(P0, fitness, random_min, random_max))
     return 0
 
 
 print("Starting genetic algorithm...")
-average()
+m_prob()
 print("- END -")

@@ -132,13 +132,14 @@ def algorithm():
 def main():
     # -- Graphics --
     fig, ax = plt.subplots()
-    ax.set_title("Error en función de las generaciones")
-    ax.set_xlabel("generations")
-    ax.set_ylabel("error")
+    ax.set_title("Relationship between error and generations - " + config['selection_method'] + " selection")
+    ax.set_xlabel("Generations")
+    ax.set_ylabel("Error")
+    # plt.ylim(0,3)
 
     for i in range(10):
-        ax.plot(algorithm(), 'C'+str(i),  label='Intento' + str(i))
-
+        ax.plot(algorithm(), 'C'+str(i),  label='Attempt ' + str(i))
+    plt.legend()
     plt.show()
     return 0
 

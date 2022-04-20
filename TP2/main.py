@@ -1,4 +1,5 @@
 import json
+import math
 import sys
 import time
 
@@ -9,6 +10,8 @@ from TP2.util.function import error
 from TP2.util.selection import elite_selection, roulette_wheel_selection, rank_selection, boltzmann_selection, \
     tournament_selection, truncated_selection, sort_population_by_fitness
 
+import matplotlib as mpl
+import numpy as np
 import matplotlib.pyplot as plt
 
 if len(sys.argv) < 2 or not str(sys.argv[1]).endswith('.json'):
@@ -126,14 +129,23 @@ def algorithm():
         t = t + 1
         best_fitness.append(population[0].fitness)
 
+    return best_fitness
+
+
+def main():
     # -- Graphics --
-    plt.plot(best_fitness)
-    plt.ylabel('fitness')
-    plt.xlabel('generations')
+    fig, ax = plt.subplots()
+    ax.set_title("Error en función de las generaciones")
+    ax.set_xlabel("generations")
+    ax.set_ylabel("error")
+
+    for i in range(10):
+        ax.plot(algorithm(), 'C'+str(i),  label='Intento' + str(i))
+
     plt.show()
     return 0
 
 
 print("Starting genetic algorithm...")
-algorithm()
+main()
 print("- END -")

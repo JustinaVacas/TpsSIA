@@ -22,7 +22,7 @@ def create_next_population(population, fitness, crossing_method, mutation_p, mut
         mutate(n1, mutation_p, mutation_a)
         mutate(n2, mutation_p, mutation_a)
         new_population.append(Individual(n1, fitness(n1)))
-        new_population.append(Individual(n2, fitness(n1)))
+        new_population.append(Individual(n2, fitness(n2)))
         i += 2
 
     return new_population

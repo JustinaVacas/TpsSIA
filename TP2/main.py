@@ -1,5 +1,4 @@
 import json
-import math
 import sys
 import time
 
@@ -10,8 +9,6 @@ from TP2.util.function import error
 from TP2.util.selection import elite_selection, roulette_wheel_selection, rank_selection, boltzmann_selection, \
     tournament_selection, truncated_selection, sort_population_by_fitness
 
-import matplotlib as mpl
-import numpy as np
 import matplotlib.pyplot as plt
 
 if len(sys.argv) < 2 or not str(sys.argv[1]).endswith('.json'):

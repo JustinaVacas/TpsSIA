@@ -45,7 +45,7 @@ def rank_selection(population, P, fitness):
     population = sorted(population, key=sort_population_by_fitness, reverse=True)
     new_population = roulette_wheel_selection(population, P)
     for i in range(len(new_population)):
-        new_population[i].fitness = fitness(new_population[i].genotype)
+        new_population[i].fitness, new_population[i].error = fitness(new_population[i].genotype)
     return new_population
 
 
@@ -80,10 +80,11 @@ def tournament_selection(population, P):
 
 
 def boltzmann_selection(population, P, k, tc, to, t, fitness):
-    T = tc + (to - tc) * math.exp(- k * t)
+    T = tc + (to - tc) * math.exp((-k) * t)
 
     def pseudo_fitness(n):
-        return math.exp((fitness(population[n].genotype)) / T)
+        f, error = fitness(population[n].genotype)
+        return math.exp(f / T)
 
     total = 0
     for i in range(len(population)):
@@ -94,7 +95,7 @@ def boltzmann_selection(population, P, k, tc, to, t, fitness):
 
     new_population = roulette_wheel_selection(population, P)
     for i in range(len(new_population)):
-        new_population[i].fitness = fitness(new_population[i].genotype)
+        new_population[i].fitness, new_population[i].error = fitness(new_population[i].genotype)
     return new_population
 
 

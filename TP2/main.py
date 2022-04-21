@@ -2,6 +2,8 @@ import json
 import sys
 import time
 
+import numpy as np
+
 from TP2.util.crossover import simple_crossover, uniform_crossover, multiple_crossover
 from TP2.populations.population_0 import generate_initial_population
 from TP2.populations.next_population import create_next_population
@@ -43,7 +45,6 @@ def fitness(genotype):
 
 
 def algorithm(pop_0):
-
     P = config['P']
     if P % 2 != 0:
         P = P + 1
@@ -104,6 +105,8 @@ def algorithm(pop_0):
     stop = 0
     t = 0
     best_fitness = []
+    worst_fitness = []
+    min_error = []
     while stop == 0:
         # print("Generation: ", t)
         new_population = create_next_population(population, fitness, crossing_method, mutation_p, mutation_a, P)
@@ -132,6 +135,7 @@ def algorithm(pop_0):
             print("Generation: ", t)
         t = t + 1
         best_fitness.append(population[0].fitness)
+        worst_fitness.append(population[P - 1].fitness)
 
     return best_fitness
 
@@ -143,13 +147,24 @@ def average():
     ax.set_xlabel("Generations")
     ax.set_ylabel("Error")
 
-    for i in range(10):
+    for i in range(50):
         f = algorithm(generate_initial_population(P0, fitness, random_min, random_max))
         ax.plot(f, 'C' + str(i), label='Attempt ' + str(i))
 
-    plt.ylim()
+    plt.xlim(-10, 100)
     plt.legend()
     plt.show()
+
+
+def err_calc():
+    err_min = 3
+    genotype = []
+    for i in range(100):
+        f = algorithm(generate_initial_population(P0, fitness, random_min, random_max))
+        if f.error < err_min:
+            err_min = f.error
+            genotype = f.genotype
+    print('\n\nError_min: ' + str(err_min) + '\nGenotype: ' + str(genotype))
 
 
 def m_prob():
@@ -161,7 +176,7 @@ def m_prob():
     ax.set_xlabel("Generations")
     ax.set_ylabel("Error")
 
-    config['mutation_p'] = 0
+    config['mutation_p'] = 0.1
     f = algorithm(pop_0)
     ax.plot(f, 'C1', label='m_prob = ' + str(config['mutation_p']))
 
@@ -186,12 +201,31 @@ def m_range():
     ax.set_ylabel("Error")
     pop_0 = generate_initial_population(P0, fitness, random_min, random_max)
 
-    for i in range(5):
+    for i in range(3):
         f = algorithm(pop_0)
         ax.plot(f, 'C' + str(i), label='m_range = ' + str(config['mutation_a']))
-        config['mutation_a'] += 1
+        config['mutation_a'] += 0.5
 
     plt.xlim(-10, 100)
+    plt.legend()
+    plt.show()
+
+
+def k_test():
+    # -- Graphics --
+    fig, ax = plt.subplots()
+    ax.set_title("Relationship between error and generations - " + config['selection_method'] + " selection")
+    ax.set_xlabel("Generations")
+    ax.set_ylabel("Error")
+    pop_0 = generate_initial_population(P0, fitness, random_min, random_max)
+
+    for i in range(1):
+        f_max, f_min = algorithm(pop_0)
+        ax.plot(f_max, 'C2', label='f_max')
+        ax.plot(f_min, 'C3', label='f_min')
+
+    plt.xlim(-10, 200)
+    plt.ylim(0.9, 3.1)
     plt.legend()
     plt.show()
 
@@ -217,7 +251,6 @@ def crossing_test():
     f = algorithm(pop_0)
     ax.plot(f, 'C3', label=str(config['crossing_method']))
 
-    plt.ylim()
     plt.legend()
     plt.show()
 
@@ -228,5 +261,5 @@ def main():
 
 
 print("Starting genetic algorithm...")
-m_prob()
+main()
 print("- END -")

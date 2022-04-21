@@ -176,17 +176,20 @@ def m_prob():
     ax.set_xlabel("Generations")
     ax.set_ylabel("Error")
 
-    config['mutation_p'] = 0.1
+    config['mutation_p'] = 0.01
     f = algorithm(pop_0)
     ax.plot(f, 'C1', label='m_prob = ' + str(config['mutation_p']))
+    print("mutacion 1")
 
     config['mutation_p'] = 0.05
     f = algorithm(pop_0)
     ax.plot(f, 'C2', label='m_prob = ' + str(config['mutation_p']))
+    print("mutacion 2")
 
-    config['mutation_p'] = 0.2
+    config['mutation_p'] = 0.1
     f = algorithm(pop_0)
     ax.plot(f, 'C3', label='m_prob = ' + str(config['mutation_p']))
+    print("mutacion 3")
 
     plt.xlim(-10, 100)
     plt.legend()
@@ -251,6 +254,32 @@ def crossing_test():
     f = algorithm(pop_0)
     ax.plot(f, 'C3', label=str(config['crossing_method']))
 
+    plt.legend()
+    plt.show()
+
+
+def selection_test():
+    # -- Graphics --
+    fig, ax = plt.subplots()
+    ax.set_title("Relationship between error and generations")
+    ax.set_xlabel("Generations")
+    ax.set_ylabel("Error")
+    pop_0 = generate_initial_population(P0, fitness, random_min, random_max)
+
+    config['crossing_method'] = "simple"
+    config['selection_method'] = "elite"
+    f = algorithm(pop_0)
+    ax.plot(f, 'C1', label=str(config['selection_method']))
+
+    config['selection_method'] = "roulette"
+    f = algorithm(pop_0)
+    ax.plot(f, 'C2', label=str(config['selection_method']))
+
+    config['selection_method'] = "rank"
+    f = algorithm(pop_0)
+    ax.plot(f, 'C3', label=str(config['selection_method']))
+
+    plt.xlim(-10, 100)
     plt.legend()
     plt.show()
 

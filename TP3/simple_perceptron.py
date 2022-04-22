@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 # N es la dim de cada entrada --> 2 = {-1,1}
@@ -17,22 +18,17 @@ def calculate_error(x, y, w, p):
     return error
 
 
-def simple_perceptron(p, n, x, y):
+def simple_perceptron(p, n, x, y, limit):
     i = 0
-    limit = 1000
     w = np.zeros(len(x[0]))
-    print("w = ", w)
     error = 1
     error_min = p * 2
     w_min = 0
+    weights = []
     while error > 0 and i < limit:
-        print("i = ", i)
         i_x = np.random.randint(0, p)  # 0 1 2 3
-        print("i_x = ", i_x)
         h = np.dot(x[i_x], w)  # calculate excitation
-        print("h = ", h)
         output = np.sign(h)  # calculate activation
-        print("output = ", output)
 
         # delta_w = n * (y[i_x] - output) * x[i_x]
         # w[i_x] += delta_w
@@ -46,14 +42,49 @@ def simple_perceptron(p, n, x, y):
             error_min = error
             w_min = w
         i += 1
+        weights.append(np.copy(w))
 
     print("i = ", i)
     print("y = ", y)
     print("w_min = ", w_min)
+    print("weights = ", weights)
+
+    plot(x, y, weights, limit)
 
 
-x = [[1, -1, 1], [1, 1, -1], [1, -1, -1], [1, 1, 1]]
-y = [-1, -1, -1, 1]
-p = len(x)
-n = 0.1     # taza aprendizaje
-simple_perceptron(p, n, x, y)
+def plot(input, output, weights, limit):
+    fig, ax = plt.subplots()
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    for i in range(len(input)):
+        if output[i] == -1:
+            color = "black"
+        else:
+            color = "red"
+        ax.scatter(input[i][1], input[i][2], color=color)
+    plt.axhline(y=0, xmin=-1, xmax=1, color="grey")
+    plt.axvline(x=0, ymin=-1, ymax=1, color="grey")
+
+    # en la 1000 ya aprendio
+    a = -(weights[limit-1][1] / weights[limit-1][2])    # -(w1/w2)
+    b = -(weights[limit-1][0] / weights[limit-1][2])    # w0/w2
+    y = lambda x: a * x + b                             # clasifica entre los -1 y 1
+    ax.plot([-2, 2], [y(-2), y(2)], color="blue")
+
+    plt.title("Perceptron simple")
+    plt.show()
+
+
+# and
+input = [[1, -1, 1], [1, 1, -1], [1, -1, -1], [1, 1, 1]]
+output = [-1, -1, -1, 1]
+# or
+# input = [[1, -1, 1], [1, 1, -1], [1, -1, -1], [1, 1, 1]]
+# output = [1, 1, -1, -1]
+p = len(input)
+n = 0.1  # taza aprendizaje
+limit = 1000
+simple_perceptron(p, n, input, output, limit)
+
+# conclusiones
+# el or no tiene solucion, porque no se pueden separar los rojos de los negros

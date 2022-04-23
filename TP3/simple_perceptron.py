@@ -17,7 +17,6 @@ def calculate_error(x, y, w, p):
         error += abs(o - y[i])
     return error
 
-
 def simple_perceptron(p, n, x, y, limit):
     i = 0
     w = np.zeros(len(x[0]))
@@ -75,16 +74,3 @@ def plot(input, output, weights, limit):
     plt.show()
 
 
-# and
-input = [[1, -1, 1], [1, 1, -1], [1, -1, -1], [1, 1, 1]]
-output = [-1, -1, -1, 1]
-# or
-# input = [[1, -1, 1], [1, 1, -1], [1, -1, -1], [1, 1, 1]]
-# output = [1, 1, -1, -1]
-p = len(input)
-n = 0.1  # taza aprendizaje
-limit = 1000
-simple_perceptron(p, n, input, output, limit)
-
-# conclusiones
-# el or no tiene solucion, porque no se pueden separar los rojos de los negros

@@ -3,6 +3,8 @@ from scipy.optimize import minimize
 import numpy as np
 from Ej.function import error
 from numpy import inf
+from qiskit.algorithms.optimizers import ADAM
+
 
 def main():
 
@@ -32,16 +34,16 @@ def main():
     print("Error = ", opt2.fun)
     print("Time = ", time.time() - start_time2)
 
-    # # gradiente adam
-    # x3 = np.zeros(11)
-    # start_time3 = time.time()
-    # opt1 =
-    # print("Gradiente adam")
-    # print("W = ", opt3.x[0:3])
-    # print("w = " + str(opt3.x[3:6]) + "\n\t" + str(opt3.x[6:9]))
-    # print("w0 = ", opt3.x[9:11])
-    # print("Error = ", opt3.fun)
-    # print("Time = ", time.time() - start_time3)
+    # metodo adam
+    x3 = np.zeros(11)
+    start_time3 = time.time()
+    opt3 = ADAM().optimize(11, error, initial_point=x3)
+    print("Metodo Adam")
+    print("W = ", [opt3[0][i] for i in range(0, 3)])
+    print("w = " + str([opt3[0][i] for i in range(3, 6)]) + "\n\t" + str([opt3[0][i] for i in range(6, 9)]))
+    print("w0 = ", [opt3[0][i] for i in range(9, 11)])
+    print("Error = ", error(opt3[0]))
+    print("Time = ", time.time() - start_time3)
 
 
 print("Starting...")

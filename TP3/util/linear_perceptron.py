@@ -8,7 +8,7 @@ def calculate_error(x, y, w, p):
     for i in range(p):
         output = np.dot(x[i], w)
         error += (y[i] - output) ** 2
-    return 0.5 * error
+    return (1 / p) * error
 
 
 def linear_train(p, n, x, y, limit):
@@ -33,7 +33,7 @@ def linear_train(p, n, x, y, limit):
         i += 1
 
     end_time = time.process_time()
-    print('------ Training... --------')
+    print('------ Linear Training... --------')
     print("Iterations = ", i)
     print("Time: " + str(end_time - start_time) + " s")
     print("Error_min = " + str(error_min))

@@ -27,9 +27,9 @@ with open('salidas.txt') as f2:
     f2.close()
 
 p = len(inputs)
-n = 0.01  # taza aprendizaje
+n = 0.01
 limit = 1000
-beta = 0.7
+beta = 1
 
 # ------------ Lineal --------------- #
 

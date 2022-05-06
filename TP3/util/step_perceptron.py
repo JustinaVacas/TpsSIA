@@ -69,9 +69,11 @@ def plot(inputs, outputs, weights, limit):
 
     # en la 1000 ya aprendio
     a = -(weights[limit - 1][1] / weights[limit - 1][2])  # -(w1/w2)
-    b = -(weights[limit - 1][0] / weights[limit - 1][2])  # w0/w2
+    b = -(weights[limit - 1][0] / weights[limit - 1][2])  # -(w0/w2)
+    c = -(weights[limit - 1][1] / weights[limit - 1][2])  # -(w1/w2)
     y = lambda x: a * x + b  # clasifica entre los -1 y 1
     ax.plot([-2, 2], [y(-2), y(2)], color="blue")
+    ax.quiver(0, 1, c, -1, units='xy', scale=1)
 
     plt.title("Perceptron simple")
     plt.show()

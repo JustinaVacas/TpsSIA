@@ -2,6 +2,7 @@ import time
 from math import tanh
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def g(h, beta):
@@ -9,7 +10,7 @@ def g(h, beta):
 
 
 def g_prime(h, beta):
-    return beta * (1 - g(h, beta)**2)
+    return beta * (1 - g(h, beta) ** 2)
 
 
 def normalize_inverse(x, t_max, t_min):
@@ -23,17 +24,17 @@ def calculate_error(x, y, w, p, beta, t_max, t_min):
     for i in range(p):
         h = np.dot(w, x[i])
         output = g(h, beta)
-        error2 += (y[i] - output)**2
+        error2 += (y[i] - output) ** 2
         output = normalize_inverse(output, t_max, t_min)  # usamos la inversa de la función de normalización
-        error += (aux[i] - output)**2
-    return (1/p) * error, (1/p) * error2
+        error += (aux[i] - output) ** 2
+    return (1 / p) * error, (1 / p) * error2
 
 
 def not_linear_train(p, n, x, y, limit, beta, t_max, t_min):
     i = 0
     w = np.zeros(len(x[0]))
     error = 1
-    error2 = 1          # Error sin escalar
+    error2 = 1  # Error sin escalar
     error_min = -1
     error2_min = -1
     w_min = np.zeros(len(x[0]))

@@ -4,7 +4,7 @@ from TP3.util.linear_perceptron import linear_train
 from TP3.util.not_linear_perceptron import not_linear_train
 from TP3.util.test import calculate_error
 
-with open('entradas.txt') as f1:
+with open('./ej2/entradas.txt') as f1:
     lines = f1.readlines()
     values = []
 
@@ -15,7 +15,7 @@ with open('entradas.txt') as f1:
     inputs = np.array(values)
     f1.close()
 
-with open('salidas.txt') as f2:
+with open('./ej2/salidas.txt') as f2:
     lines = f2.readlines()
     values = []
 

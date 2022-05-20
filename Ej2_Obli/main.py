@@ -21,8 +21,8 @@ y = df.Country.values
 x = StandardScaler().fit_transform(x)
 
 pca = PCA()
-principalComponents = pca.fit_transform(x)
-principalDf = pd.DataFrame(data=principalComponents[:, 0], index=y).T
+principalComponents = pca.fit_transform(x)                              # tira los componentes principales
+principalDf = pd.DataFrame(data=principalComponents[:, 0], index=y).T   # tira el primero de los componentes principales
 
 print("Principal Components\n")
 print(principalComponents)

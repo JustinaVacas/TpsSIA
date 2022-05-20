@@ -3,7 +3,7 @@ import time
 from autograd.misc.optimizers import sgd
 from scipy.optimize import minimize
 import numpy as np
-from Ej.function import error
+from Ej1_Obli.function import error
 from numpy import inf
 from qiskit.algorithms.optimizers import ADAM
 from autograd import grad

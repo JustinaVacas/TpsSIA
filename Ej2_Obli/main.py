@@ -36,7 +36,8 @@ print(pca.explained_variance_ratio_.cumsum())
 
 loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
 
-fig = px.scatter(principalComponents, x=0, y=1, color=df['Country'])
+fig = px.scatter(principalComponents, x=0, y=1, text=y, color=y)
+fig.update_traces(textposition='top center')
 
 for i, feature in enumerate(features):
     fig.add_shape(

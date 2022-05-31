@@ -41,6 +41,8 @@ def hopfield(patrones, entrada):
         if not np.array_equiv(previous, states):
             previous = states
             states = np.zeros(25)
+        print("-----actual----\n")
+        print_letter(previous)
 
     print("Final states\n")
     print_letter(states)
@@ -50,7 +52,7 @@ def hopfield(patrones, entrada):
 
 if __name__ == "__main__":
 
-    RUIDO = 0.01
+    RUIDO = 0.7
 
     letters = get_letters()
     alphabet = get_alphabet()

@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 def regla_oja():
     n = 0.0001          #mientras mas chico sea mas le pega al de la libreria
     total_neurons = 28
-    max_epochs = 500 * total_neurons
+    max_epochs = 500
     # TODO chequear que esten bien los parametros
 
     np.set_printoptions(suppress=True, linewidth=np.inf)  # para que no me ponga exponenciales
@@ -32,7 +32,7 @@ def regla_oja():
             w.append(weight)
         iterations += 1
 
-    # print("Autovector", w[-1])  # devulve el ultimo array
+    print("Autovector", w[-1])  # devulve el ultimo array
     primer_componente = np.matmul(data, w[-1])  # producto vectorial de data y el autovector
 
     pd.set_option('display.max_columns', None)  # para que la fila la imprima entera y no con ....

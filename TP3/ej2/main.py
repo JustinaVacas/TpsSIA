@@ -29,7 +29,7 @@ with open('./ej2/salidas.txt') as f2:
 p = len(inputs)
 n = 0.01
 limit = 1000
-beta = 1
+beta = 0.7
 
 # ------------ Lineal --------------- #
 
@@ -38,23 +38,26 @@ w_linear, linear_error = linear_train(p, n, inputs, outputs, limit)
 
 # ------------ No Lineal --------------- #
 
-# Training
-train_inputs = inputs[:150]
-train_outputs = outputs[:150]
-train_p = len(train_inputs)
+for i in range(19):
+    # Training
+    train_inputs = inputs[i*10:(i+1)*10]
+    train_outputs = outputs[i*10:(i+1)*10]
+    train_p = len(train_inputs)
 
-t_min = np.amin(train_outputs)
-t_max = np.amax(train_outputs)
-t_range = t_max - t_min
-normalized_outputs = list(map(lambda x: 2 * ((x - t_min)/t_range) - 1, train_outputs))     # escalamos los valores deseados entre 0 y 1
+    t_min = np.amin(train_outputs)
+    t_max = np.amax(train_outputs)
+    t_range = t_max - t_min
+    normalized_outputs = list(map(lambda x: 2 * ((x - t_min)/t_range) - 1, train_outputs))     # escalamos los valores deseados entre 0 y 1
 
-w_not_linear, not_linear_error, not_linear_error2 = not_linear_train(train_p, n, train_inputs, normalized_outputs, limit, beta, t_max, t_min)
+    w_not_linear, not_linear_error, not_linear_error2 = not_linear_train(train_p, n, train_inputs, normalized_outputs, limit, beta, t_max, t_min)
 
-# Test
-test_inputs = inputs[150:]
-test_outputs = outputs[150:]
-test_min = np.amin(test_outputs)
-test_max = np.amax(test_outputs)
-test_p = len(test_inputs)
-error, hits = calculate_error(test_inputs, test_outputs, w_not_linear, test_p, beta, test_max, test_min)
-print("Success: ", hits*100/50, "%")
+    # Test
+    test_inputs = inputs[190:]
+    test_outputs = outputs[190:]
+    test_min = np.amin(test_outputs)
+    test_max = np.amax(test_outputs)
+    test_p = len(test_inputs)
+    error, hits = calculate_error(test_inputs, test_outputs, w_not_linear, test_p, beta, test_max, test_min)
+    print("Success k=" + str(i) + ': ', hits*100/10, "%")
+    print('\n')
+

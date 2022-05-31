@@ -3,13 +3,13 @@
     "learning_rate": 0.01,
     "hidden_layers": [10,10],
     "epochs_amount": 1000,
-    "batch": true,
-    "momentum": true,
+    "batch": false,
+    "momentum": false,
     "beta": 0.7,
     "adaptive_eta": {
         "use": true,
-        "increase_by": 0.01,
-        "decrease_by": 0.03,
-        "max_iterations": 4
+        "increase_by": 0.02,
+        "decrease_by": 0.06,
+        "max_iterations": 2
     }
 }

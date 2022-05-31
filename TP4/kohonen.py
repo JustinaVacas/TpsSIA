@@ -1,6 +1,84 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+from typing import Tuple
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+class Neuron:
+    def __init__(self, weights, count, position):
+        self.weights = weights
+        self.count = count
+        self.position = position
+        self.elements = np.array([])
+
+    def add(self, elem):
+        self.elements = np.append(self.elements, elem)
+
+
+def get_neighbors(i, j):
+    return [(i, j + 1), (i + 1, j), (i + 1, j + 1), (i, j - 1), (i - 1, j), (i - 1, j - 1), (i - 1, j + 1),
+            (i + 1, j - 1)]
+
+
+def plt_matrixU(k, grid):
+    u_values = np.zeros((k, k), float)
+    plt.figure(figsize=(20, 10))
+
+    for i in range(k):
+        for j in range(k):
+            aux = np.linalg.norm(grid[i, j].weights)
+            w = grid[i, j].weights / aux
+            neighbors = get_neighbors(i, j)
+            distances = []
+            for n in neighbors:
+                x, y = n[0], n[1]
+                if x >= 0 and y >= 0 and x < k and y < k:
+                    aux = np.linalg.norm(np.array(grid[x, y].weights))
+                    neighbor_neuron_w = grid[x, y].weights / aux
+                    dist = np.linalg.norm(w - neighbor_neuron_w)
+                    distances.append(dist)
+
+            u_values[i][j] = np.mean(distances)
+
+    sns.heatmap(u_values, annot=True, cmap='YlGnBu')
+
+    plt.savefig('matrixU.png')
+    plt.show()
+
+
+def plt_map(k, grid, countries,data):
+    values = np.zeros((k, k), int)
+    index = 0
+    for elem in data:
+        position_min = (None, None)
+        min_dist = 999
+        for i in grid:
+            for j in i:
+                w = j.weights
+                dist = np.linalg.norm(elem - w)
+                if dist < min_dist:
+                    position_min = j.position
+                    min_dist = dist
+        grid[position_min[0], position_min[1]].add(countries[index])
+        grid[position_min[0], position_min[1]].count += 1
+        values[position_min[0], position_min[1]] += 1
+        index += 1
+
+    fig, ax = plt.subplots(figsize=(20, 10))
+    x = 0
+    for col in grid:
+        for y in range(len(col)):
+            label = ''
+            for e in grid[x][y].elements:
+                label = label + str(e) + '\n'
+            ax.text(y + 0.1, x + 0.75, label, color = "r")
+        x += 1
+
+    sns.heatmap(values, annot=True, ax=ax, cmap="YlGnBu")
+    plt.savefig('matrix.png')
+    plt.show(block=False)
 
 
 def set_weights(data, k):
@@ -38,6 +116,16 @@ def update_neighbours(weights, radio, w_k, n, x_p):
         if j in n_k:
             weights[j] = weights[j] + n * (x_p - weights[j])
     print("weights", weights)
+
+
+def create_grid(weights, k):
+  grid = np.empty((k, k), Neuron)
+  index = 0
+  for i in range(k):
+      for j in range(k):
+          grid[i][j] = Neuron(weights[index], 0, (i, j))
+          index += 1
+  return grid
 
 
 def kohonen():
@@ -82,6 +170,11 @@ def kohonen():
             radio -= 1
             if radio < 0:
                 radio = 1
+
+    grid = create_grid(weights, k)
+
+    plt_map(k, grid, y, data)
+    plt_matrixU(k, grid)
 
 
 if __name__ == "__main__":

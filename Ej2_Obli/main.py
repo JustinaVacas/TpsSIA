@@ -25,6 +25,8 @@ pca = PCA()
 principalComponents = pca.fit_transform(x)                              # tira los componentes principales
 principalDf = pd.DataFrame(data=principalComponents[:, 0], index=y).T   # tira el primero de los componentes principales
 
+print("autovector\n")
+print(pca.components_.T[:, 0])
 print("Principal Components\n")
 print(principalComponents)
 print('\n')

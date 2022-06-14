@@ -64,21 +64,26 @@ if ex == 1:
 elif ex == 2:
     print("------ Ejercicio 2 ------")
 
-    training_set = inputs[:5]
-    test_set = inputs[5:]
-    expected_outputs = [1, -1] * 5
+    for i in range(4):
+        training_set = inputs[i*2:(i+1)*2]
+        test_set = inputs[8:]
+        expected_outputs = [1, -1] * 5
 
-    mp2 = MultilayerPerceptron(training_set, expected_outputs, learning_rate, hidden_layers, adaptive_eta_params, beta, batch, momentum)
-    mp2.train(epochs_amount)
+        mp2 = MultilayerPerceptron(training_set, expected_outputs, learning_rate, hidden_layers, adaptive_eta_params, beta, batch, momentum)
+        mp2.train(epochs_amount)
 
-    results = np.array(mp2.get_output(test_set), dtype=float)
-    print('Resultados:')
-    print("Esperado\t   \t\tReales")
-    error = 0
-    for i in range(results.size):
-        print('  ', expected_outputs[i], "\t\t-->\t\t", np.round(results[i])[0])
-        error += abs(expected_outputs[i]-np.round(results[i][0]))
-    print('Total Error: ', f'{error/len(results)}')
+        test_results = np.array(mp2.get_output(test_set), dtype=float)
+        results = np.array(mp2.get_output(training_set), dtype=float)
+        print('Resultados k=' + str(i) + ' :')
+        print("Esperado\t   \t\tReales")
+        error = 0
+        for j in range(results.size):
+            print('  ', expected_outputs[j], "\t\t-->\t\t", results[j][0])
+        for q in range(test_results.size):
+            print('  ', expected_outputs[q], "\t\t-->\t\t", test_results[q][0])
+            error += abs(expected_outputs[q]-test_results[q][0])
+        print('Total Error: ', f'{error/len(results)}')
+        print('\n')
 
 # Parte 3
 elif ex == 3:
@@ -109,6 +114,8 @@ elif ex == 3:
     print("Esperado", "\t-->\t", "\t\t\tError")
     error = 0
     for i in range(10):
-        print(outputs[i], "\t\t-->\t\t", outputs[i]-results[i][0])
-        error += abs(outputs[i]-results[i][0])
-    print("Total error: ", error)
+        print(outputs[i], "\t\t-->\t\t", abs(outputs[i]-results[i][0]))
+        aux = abs(outputs[i]-results[i][0])
+        if aux >= 0.1:
+            error += 1
+    print("Errors: ", error)

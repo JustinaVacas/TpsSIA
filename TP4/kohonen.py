@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from typing import Tuple
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -73,7 +72,7 @@ def plt_map(k, grid, countries,data):
             label = ''
             for e in grid[x][y].elements:
                 label = label + str(e) + '\n'
-            ax.text(y + 0.1, x + 0.75, label, color = "r")
+            ax.text(y + 0.1, x + 0.75, label, color="r", weight='bold')
         x += 1
 
     sns.heatmap(values, annot=True, ax=ax, cmap="YlGnBu")
@@ -110,12 +109,12 @@ def update_neighbours(weights, radio, w_k, n, x_p):
         if i != w_k and np.linalg.norm(weights[i] - neu_k) < radio:
             n_k.append(i)
     np.array(n_k)
-    print("n_k", n_k)
+    #print("n_k", n_k)
 
     for j in range(len(weights)):
         if j in n_k:
             weights[j] = weights[j] + n * (x_p - weights[j])
-    print("weights", weights)
+    #print("weights", weights)
 
 
 def create_grid(weights, k):
@@ -130,11 +129,10 @@ def create_grid(weights, k):
 
 def kohonen():
     total_neurons = 28
-    k = 5
+    k = 4
     n = 0.01
-    max_epochs = 500 * total_neurons
-    radio = 2**(1/2)
-    # TODO chequear que esten bien los parametros
+    max_epochs = 50 * total_neurons
+    radio = k**0.5
 
     np.set_printoptions(suppress=True, linewidth=np.inf)  # para que no me ponga exponenciales
 
@@ -144,22 +142,22 @@ def kohonen():
     y = dataset.iloc[:, 0].values      # countries names
 
     data = StandardScaler().fit_transform(x)
-    print("Variables estandarizadas\n", data)
+    # print("Variables estandarizadas\n", data)
 
     # seteamos los pesos
     weights = set_weights(data, k)
-    print("weights\n", weights)
+    # print("weights\n", weights)
 
     iteration = 1
     while iteration < max_epochs:
 
         # selecciono un registro de la entrada
         x_p = data[np.random.randint(len(data))]
-        print("x_p", x_p)
+        # print("x_p", x_p)
 
         # encontrar neurona ganadora
         w_k = get_winner(x_p, weights)
-        print("w_k", w_k)
+        # print("w_k", w_k)
 
         # actualizar los pesos de las neuronas vecinas
         update_neighbours(weights, radio, w_k, n, x_p)

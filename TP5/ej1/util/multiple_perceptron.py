@@ -384,6 +384,8 @@ class Network:
         print("Minimum loss: ", min_loss)
         self.weights = min_weights
         plt.plot(x, loss)
+        plt.ylabel("Loss")
+        plt.xlabel("Epoch")
         plt.show()
 
     def back_propagate(self, error):

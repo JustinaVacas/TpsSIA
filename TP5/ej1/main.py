@@ -6,6 +6,8 @@ from TP5.ej1.util.autoencoder_utils import to_bits, labeled_scatter, print_bit_a
 from TP5.fonts import font2, font2_lables, font1, font1_lables, font3_lables, font3
 from TP5.ej1.util.multiple_perceptron import Network
 
+import matplotlib.pyplot as plt
+
 import os
 import sys
 
@@ -30,4 +32,28 @@ count = 35
 start = 0
 training_points = training_values = to_bits(font3)[start:start+count]
 
-neural_network.train(training_points, training_values, epoch, eta,5, 0.5,10, 0.1, True)
+neural_network.train(training_points, training_values, epoch, eta, 5, 0.5, 10, 0.1, True)
+
+z_values: np.ndarray = np.empty((np.size(training_points, 0), 2))
+predictions: np.ndarray = np.empty(training_points.shape)
+
+# espacio latente
+for i in range(np.size(training_points, 0)):
+    predictions[i], w = neural_network.predict(training_points[i])
+    z_values[i] = neural_network.activations[len(layers)//2 + 1]
+labeled_scatter(z_values[:, 0], z_values[:, 1], labels=font3_lables[start:start+count])
+
+# comparar letras orginales con las predecidas
+for i in range(32):
+    plt.figure()
+    plt.subplot(1, 2, 1)
+    plt.imshow(training_points[i].reshape(7, 5), 'gray_r')
+    plt.title("Input Letter: " + font3_lables[i], fontsize=15)
+    plt.xticks([])
+    plt.yticks([])
+    plt.subplot(1, 2, 2)
+    plt.imshow(predictions[i].reshape(7, 5), 'gray_r')
+    plt.title('Predicted', fontsize=15)
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()

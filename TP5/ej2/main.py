@@ -1,20 +1,15 @@
-import keras
-from keras.datasets import mnist, fashion_mnist, boston_housing
+from keras.datasets import mnist, fashion_mnist, cifar10
 from scipy.stats import norm
-
-# from fonts.fonts import Font3
-# from utils import transform_input, letter_heatmap
 from vae import VAE
-# from numpy import array
 import numpy as np
 import matplotlib.pyplot as plt
-# import tensorflow as tf
 
 
 if __name__ == "__main__":
     layers = [256]
     max_iter = 50
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    # (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
 
     x_train = x_train.astype('float32') / 255.
     x_test = x_test.astype('float32') / 255.
@@ -28,7 +23,7 @@ if __name__ == "__main__":
     x_test_encoded = vae.encoder.predict(x_test, batch_size=100)[0]
 
     plt.figure(figsize=(6, 6))
-    plt.scatter(x_test_encoded[:, 0], x_test_encoded[:, 1], c=y_test, cmap='plasma')
+    plt.scatter(x_test_encoded[:, 0], x_test_encoded[:, 1], c=y_test, cmap='gist_rainbow')
     plt.colorbar()
     plt.show()
 

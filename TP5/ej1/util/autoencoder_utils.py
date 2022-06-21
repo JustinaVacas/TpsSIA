@@ -1,13 +1,5 @@
-from typing import List, Tuple
-import os
 import numpy as np
-from skimage import color, io
-from skimage.transform import resize
 from matplotlib import pyplot as plt
-from scipy.interpolate import interp1d
-
-# from TP3.neural_network_lib.neural_network import MultilayeredNeuralNetwork
-# from TP5.ej1.util.multiple_perceptron import Network
 
 
 def labeled_scatter(xValues, yValues, labels=None):

@@ -25,7 +25,7 @@ layers.insert(0, np.size(training_points, axis=1))
 
 epoch = 5000
 eta = 0.0005
-noise = 0.15
+noise = 0.2
 
 neural_network: Network = Network(np.size(training_points, 1), layers, np.size(training_points, 1), 1e-6)
 

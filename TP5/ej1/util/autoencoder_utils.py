@@ -31,7 +31,7 @@ def to_bits(values: np.ndarray) -> np.ndarray:
 def add_noise(images: np.ndarray, noise: float):
     images_with_noise = []
     for image in images:
-        images_with_noise.append(np.array([image[i] + np.random.uniform(0.05, 0.1) * np.random.uniform(-0.01, 0.01)
+        images_with_noise.append(np.array([image[i] - np.random.uniform(0.1, 0.2)*image[i]
                                            if np.random.random() < noise else image[i] for i in range(np.size(image))]))
 
     return np.array(images_with_noise)

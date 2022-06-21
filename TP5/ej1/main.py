@@ -2,7 +2,7 @@
 
 from typing import List
 import numpy as np
-from TP5.ej1.util.autoencoder_utils import to_bits, labeled_scatter, print_bit_array, generate
+from TP5.ej1.util.autoencoder_utils import to_bits, labeled_scatter
 from TP5.fonts import font2, font2_lables, font1, font1_lables, font3_lables, font3
 from TP5.ej1.util.multiple_perceptron import Network
 
@@ -19,7 +19,7 @@ if module_path not in sys.path:
 
 training_points = to_bits(font3)
 
-layers: List[int] = [25,15,5, 2, 5,15,25]
+layers: List[int] = [25, 15, 5, 2, 5, 15, 25]
 layers.append(np.size(training_points, axis=1))
 layers.insert(0, np.size(training_points, axis=1))
 
@@ -28,11 +28,11 @@ eta = 0.0005
 
 neural_network: Network = Network(np.size(training_points, 1), layers, np.size(training_points, 1), 1e-6)
 
-count = 35
-start = 0
+count = 10
+start = 1
 training_points = training_values = to_bits(font3)[start:start+count]
 
-neural_network.train(training_points, training_values, epoch, eta, 5, 0.5, 10, 0.1, True)
+neural_network.train_with_noise(training_points, training_values, epoch, eta, 0.15, 5, 0.5, 10, 0.1, True)
 
 z_values: np.ndarray = np.empty((np.size(training_points, 0), 2))
 predictions: np.ndarray = np.empty(training_points.shape)
@@ -44,7 +44,7 @@ for i in range(np.size(training_points, 0)):
 labeled_scatter(z_values[:, 0], z_values[:, 1], labels=font3_lables[start:start+count])
 
 # comparar letras orginales con las predecidas
-for i in range(32):
+for i in range(count - start):
     plt.figure()
     plt.subplot(1, 2, 1)
     plt.imshow(training_points[i].reshape(7, 5), 'gray_r')

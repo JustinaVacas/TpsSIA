@@ -148,7 +148,8 @@ class Network:
         loss_value = 0
 
         for i in range(epochs):
-            inputs = add_noise(inputs, noise + (i/(3*epochs)))
+            if not i % 100:
+                inputs = add_noise(inputs, noise)
             total_error = 0
             for j, input_ in enumerate(inputs):
                 predicted_output, weights = self.predict(input_)

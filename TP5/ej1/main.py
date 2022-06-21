@@ -25,7 +25,7 @@ layers.insert(0, np.size(training_points, axis=1))
 
 epoch = 5000
 eta = 0.0005
-noise = 0.2
+noise = 0.15
 
 neural_network: Network = Network(np.size(training_points, 1), layers, np.size(training_points, 1), 1e-6)
 
@@ -45,11 +45,11 @@ for i in range(np.size(training_points, 0)):
 labeled_scatter(z_values[:, 0], z_values[:, 1], labels=font3_lables[start:start+count])
 
 # comparar letras orginales con las predecidas
-for i in range(start, start+count):
+for i in range(count-start):
     plt.figure()
     plt.subplot(1, 2, 1)
     plt.imshow(training_points[i].reshape(7, 5), 'gray_r')
-    plt.title("Input Letter: " + font3_lables[i], fontsize=15)
+    plt.title("Input Letter: " + font3_lables[start + i], fontsize=15)
     plt.xticks([])
     plt.yticks([])
     plt.subplot(1, 2, 2)

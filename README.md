@@ -9,5 +9,5 @@ Repositorio para los TPs de Sistemas de Inteligencia Artificial
 - TP5 Deep learning
 
 
-- TP1 Obligatorio: Metodos de Optimizacion NO lineal
-- TP2 Obligatorio: PCA
+- Ej1 Obligatorio: Metodos de Optimizacion NO lineal
+- Ej2 Obligatorio: PCA
